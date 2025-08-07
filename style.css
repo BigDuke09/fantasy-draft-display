@@ -1,0 +1,63 @@
+body {
+  font-family: sans-serif;
+  background-color: #111;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+#pick-announcement {
+  background: #222;
+  padding: 20px;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  border-bottom: 2px solid gold;
+  transition: opacity 1s ease;
+}
+
+#pick-announcement.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#pick-announcement img {
+  height: 100px;
+  border-radius: 8px;
+}
+
+#draft-board {
+  margin-top: 140px;
+  padding: 20px;
+}
+
+.pick {
+  padding: 4px 0;
+  border-bottom: 1px solid #333;
+}
+
+#chyron-wrapper {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+  height: 30px;
+  border-top: 2px solid gold;
+}
+
+#chyron {
+  display: inline-block;
+  white-space: nowrap;
+  color: gold;
+  font-size: 16px;
+  padding-left: 100%;
+  animation: scroll-chyron 30s linear infinite;
+}
+
+@keyframes scroll-chyron {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+

@@ -1,0 +1,1863 @@
+{
+  "draftOrder": [
+    {
+      "id": 1807899,
+      "name": "TEstTeamA",
+      "initials": "T"
+    },
+    {
+      "id": 1807900,
+      "name": "TestTeamB",
+      "initials": "T"
+    },
+    {
+      "id": 1807901,
+      "name": "TestTeamC",
+      "initials": "T"
+    },
+    {
+      "id": 1807896,
+      "name": "Scourge's Team",
+      "initials": "ST"
+    }
+  ],
+  "rows": [
+    {
+      "round": 1,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "player": {
+            "proPlayer": {
+              "id": 16250,
+              "nameFull": "Ja'Marr Chase",
+              "nameShort": "J. Chase",
+              "proTeamAbbreviation": "CIN",
+              "position": "WR",
+              "headshotUrl": "https://d26bvpybnxg29h.cloudfront.net/nfl/16250.png",
+              "nflByeWeek": 10,
+              "nameFirst": "Ja'Marr",
+              "nameLast": "Chase",
+              "proTeam": {
+                "abbreviation": "CIN",
+                "location": "Cincinnati",
+                "name": "Bengals"
+              },
+              "positionEligibility": [
+                "WR"
+              ]
+            },
+            "transactionStatus": {
+              "locked": {
+                "reason": "PREDRAFT"
+              },
+              "isLineupStatusLocked": true
+            },
+            "requestedGamesPeriod": {
+              "ordinal": 1,
+              "startEpochMilli": "1756807200000"
+            },
+            "viewingFormat": "TOTAL",
+            "viewingRange": {
+              "low": -1,
+              "high": -2
+            },
+            "displayGroup": "RECEIVER",
+            "lastX": [
+              {
+                "duration": 1
+              },
+              {
+                "duration": 3
+              },
+              {
+                "duration": 5
+              }
+            ]
+          },
+          "slot": {
+            "round": 1,
+            "slot": 1,
+            "overall": 1
+          },
+          "color": "DRAFT_BOARD_BLUE"
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "player": {
+            "proPlayer": {
+              "id": 17603,
+              "nameFull": "Bijan Robinson",
+              "nameShort": "B. Robinson",
+              "proTeamAbbreviation": "ATL",
+              "position": "RB",
+              "headshotUrl": "https://d26bvpybnxg29h.cloudfront.net/nfl/17603.png",
+              "nflByeWeek": 5,
+              "nameFirst": "Bijan",
+              "nameLast": "Robinson",
+              "proTeam": {
+                "abbreviation": "ATL",
+                "location": "Atlanta",
+                "name": "Falcons"
+              },
+              "positionEligibility": [
+                "RB"
+              ]
+            },
+            "transactionStatus": {
+              "locked": {
+                "reason": "PREDRAFT"
+              },
+              "isLineupStatusLocked": true
+            },
+            "requestedGamesPeriod": {
+              "ordinal": 1,
+              "startEpochMilli": "1756807200000"
+            },
+            "viewingFormat": "TOTAL",
+            "viewingRange": {
+              "low": -1,
+              "high": -2
+            },
+            "displayGroup": "RUSHER",
+            "lastX": [
+              {
+                "duration": 1
+              },
+              {
+                "duration": 3
+              },
+              {
+                "duration": 5
+              }
+            ]
+          },
+          "slot": {
+            "round": 1,
+            "slot": 2,
+            "overall": 2
+          },
+          "color": "DRAFT_BOARD_GREEN"
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "player": {
+            "proPlayer": {
+              "id": 13778,
+              "nameFull": "Saquon Barkley",
+              "nameShort": "S. Barkley",
+              "proTeamAbbreviation": "PHI",
+              "position": "RB",
+              "headshotUrl": "https://d26bvpybnxg29h.cloudfront.net/nfl/13778.png",
+              "nflByeWeek": 9,
+              "nameFirst": "Saquon",
+              "nameLast": "Barkley",
+              "proTeam": {
+                "abbreviation": "PHI",
+                "location": "Philadelphia",
+                "name": "Eagles"
+              },
+              "positionEligibility": [
+                "RB"
+              ]
+            },
+            "transactionStatus": {
+              "locked": {
+                "reason": "PREDRAFT"
+              },
+              "isLineupStatusLocked": true
+            },
+            "requestedGamesPeriod": {
+              "ordinal": 1,
+              "startEpochMilli": "1756807200000"
+            },
+            "viewingFormat": "TOTAL",
+            "viewingRange": {
+              "low": -1,
+              "high": -2
+            },
+            "displayGroup": "RUSHER",
+            "lastX": [
+              {
+                "duration": 1
+              },
+              {
+                "duration": 3
+              },
+              {
+                "duration": 5
+              }
+            ]
+          },
+          "slot": {
+            "round": 1,
+            "slot": 3,
+            "overall": 3
+          },
+          "color": "DRAFT_BOARD_GREEN"
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 1,
+            "slot": 4,
+            "overall": 4
+          },
+          "onTheClock": true
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 2,
+            "slot": 4,
+            "overall": 8
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 2,
+            "slot": 3,
+            "overall": 7
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 2,
+            "slot": 2,
+            "overall": 6
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 2,
+            "slot": 1,
+            "overall": 5
+          },
+          "descending": true
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 3,
+            "slot": 1,
+            "overall": 9
+          }
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 3,
+            "slot": 2,
+            "overall": 10
+          }
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 3,
+            "slot": 3,
+            "overall": 11
+          }
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 3,
+            "slot": 4,
+            "overall": 12
+          }
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 4,
+            "slot": 4,
+            "overall": 16
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 4,
+            "slot": 3,
+            "overall": 15
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 4,
+            "slot": 2,
+            "overall": 14
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 4,
+            "slot": 1,
+            "overall": 13
+          },
+          "descending": true
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 5,
+            "slot": 1,
+            "overall": 17
+          }
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 5,
+            "slot": 2,
+            "overall": 18
+          }
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 5,
+            "slot": 3,
+            "overall": 19
+          }
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 5,
+            "slot": 4,
+            "overall": 20
+          }
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 6,
+            "slot": 4,
+            "overall": 24
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 6,
+            "slot": 3,
+            "overall": 23
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 6,
+            "slot": 2,
+            "overall": 22
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 6,
+            "slot": 1,
+            "overall": 21
+          },
+          "descending": true
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 7,
+            "slot": 1,
+            "overall": 25
+          }
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 7,
+            "slot": 2,
+            "overall": 26
+          }
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 7,
+            "slot": 3,
+            "overall": 27
+          }
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 7,
+            "slot": 4,
+            "overall": 28
+          }
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 8,
+            "slot": 4,
+            "overall": 32
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 8,
+            "slot": 3,
+            "overall": 31
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 8,
+            "slot": 2,
+            "overall": 30
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 8,
+            "slot": 1,
+            "overall": 29
+          },
+          "descending": true
+        }
+      ]
+    },
+    {
+      "round": 9,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 9,
+            "slot": 1,
+            "overall": 33
+          }
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 9,
+            "slot": 2,
+            "overall": 34
+          }
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 9,
+            "slot": 3,
+            "overall": 35
+          }
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 9,
+            "slot": 4,
+            "overall": 36
+          }
+        }
+      ]
+    },
+    {
+      "round": 10,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 10,
+            "slot": 4,
+            "overall": 40
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 10,
+            "slot": 3,
+            "overall": 39
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 10,
+            "slot": 2,
+            "overall": 38
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 10,
+            "slot": 1,
+            "overall": 37
+          },
+          "descending": true
+        }
+      ]
+    },
+    {
+      "round": 11,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 11,
+            "slot": 1,
+            "overall": 41
+          }
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 11,
+            "slot": 2,
+            "overall": 42
+          }
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 11,
+            "slot": 3,
+            "overall": 43
+          }
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 11,
+            "slot": 4,
+            "overall": 44
+          }
+        }
+      ]
+    },
+    {
+      "round": 12,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 12,
+            "slot": 4,
+            "overall": 48
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 12,
+            "slot": 3,
+            "overall": 47
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 12,
+            "slot": 2,
+            "overall": 46
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 12,
+            "slot": 1,
+            "overall": 45
+          },
+          "descending": true
+        }
+      ]
+    },
+    {
+      "round": 13,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 13,
+            "slot": 1,
+            "overall": 49
+          }
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 13,
+            "slot": 2,
+            "overall": 50
+          }
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 13,
+            "slot": 3,
+            "overall": 51
+          }
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 13,
+            "slot": 4,
+            "overall": 52
+          }
+        }
+      ]
+    },
+    {
+      "round": 14,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 14,
+            "slot": 4,
+            "overall": 56
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 14,
+            "slot": 3,
+            "overall": 55
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 14,
+            "slot": 2,
+            "overall": 54
+          },
+          "descending": true
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 14,
+            "slot": 1,
+            "overall": 53
+          },
+          "descending": true
+        }
+      ]
+    },
+    {
+      "round": 15,
+      "cells": [
+        {
+          "team": {
+            "id": 1807899,
+            "name": "TEstTeamA",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 15,
+            "slot": 1,
+            "overall": 57
+          }
+        },
+        {
+          "team": {
+            "id": 1807900,
+            "name": "TestTeamB",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 15,
+            "slot": 2,
+            "overall": 58
+          }
+        },
+        {
+          "team": {
+            "id": 1807901,
+            "name": "TestTeamC",
+            "initials": "T"
+          },
+          "slot": {
+            "round": 15,
+            "slot": 3,
+            "overall": 59
+          }
+        },
+        {
+          "team": {
+            "id": 1807896,
+            "name": "Scourge's Team",
+            "initials": "ST"
+          },
+          "slot": {
+            "round": 15,
+            "slot": 4,
+            "overall": 60
+          }
+        }
+      ]
+    }
+  ],
+  "rosters": [
+    {
+      "teamId": 1807899,
+      "lineup": [
+        {
+          "position": {
+            "label": "QB",
+            "group": "START",
+            "eligibility": [
+              "QB"
+            ],
+            "min": 1,
+            "max": 4,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_RED"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "RB",
+            "group": "START",
+            "eligibility": [
+              "RB"
+            ],
+            "min": 2,
+            "max": 6,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GREEN"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "WR",
+            "group": "START",
+            "eligibility": [
+              "WR"
+            ],
+            "min": 2,
+            "max": 7,
+            "start": 2,
+            "colors": [
+              "DRAFT_BOARD_BLUE"
+            ]
+          },
+          "player": {
+            "proPlayer": {
+              "id": 16250,
+              "nameFull": "Ja'Marr Chase",
+              "nameShort": "J. Chase",
+              "proTeamAbbreviation": "CIN",
+              "position": "WR",
+              "headshotUrl": "https://d26bvpybnxg29h.cloudfront.net/nfl/16250.png",
+              "nflByeWeek": 10,
+              "nameFirst": "Ja'Marr",
+              "nameLast": "Chase",
+              "proTeam": {
+                "abbreviation": "CIN",
+                "location": "Cincinnati",
+                "name": "Bengals"
+              },
+              "positionEligibility": [
+                "WR"
+              ]
+            },
+            "transactionStatus": {
+              "locked": {
+                "reason": "PREDRAFT"
+              },
+              "isLineupStatusLocked": true
+            },
+            "requestedGamesPeriod": {
+              "ordinal": 1,
+              "startEpochMilli": "1756807200000"
+            },
+            "viewingFormat": "TOTAL",
+            "viewingRange": {
+              "low": -1,
+              "high": -2
+            },
+            "displayGroup": "RECEIVER",
+            "lastX": [
+              {
+                "duration": 1
+              },
+              {
+                "duration": 3
+              },
+              {
+                "duration": 5
+              }
+            ]
+          },
+          "draftedAt": {
+            "round": 1,
+            "slot": 1,
+            "overall": 1
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "WR",
+            "group": "START",
+            "eligibility": [
+              "WR"
+            ],
+            "min": 2,
+            "max": 7,
+            "start": 2,
+            "colors": [
+              "DRAFT_BOARD_BLUE"
+            ]
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "TE",
+            "group": "START",
+            "eligibility": [
+              "TE"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_YELLOW"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "RB/WR/TE",
+            "group": "START",
+            "eligibility": [
+              "RB",
+              "WR",
+              "TE"
+            ],
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GREEN",
+              "DRAFT_BOARD_BLUE",
+              "DRAFT_BOARD_YELLOW"
+            ]
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "K",
+            "group": "START",
+            "eligibility": [
+              "K"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GRAY"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "D/ST",
+            "group": "START",
+            "eligibility": [
+              "D/ST"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_PURPLE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        }
+      ]
+    },
+    {
+      "teamId": 1807900,
+      "lineup": [
+        {
+          "position": {
+            "label": "QB",
+            "group": "START",
+            "eligibility": [
+              "QB"
+            ],
+            "min": 1,
+            "max": 4,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_RED"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "RB",
+            "group": "START",
+            "eligibility": [
+              "RB"
+            ],
+            "min": 2,
+            "max": 6,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GREEN"
+            ]
+          },
+          "player": {
+            "proPlayer": {
+              "id": 17603,
+              "nameFull": "Bijan Robinson",
+              "nameShort": "B. Robinson",
+              "proTeamAbbreviation": "ATL",
+              "position": "RB",
+              "headshotUrl": "https://d26bvpybnxg29h.cloudfront.net/nfl/17603.png",
+              "nflByeWeek": 5,
+              "nameFirst": "Bijan",
+              "nameLast": "Robinson",
+              "proTeam": {
+                "abbreviation": "ATL",
+                "location": "Atlanta",
+                "name": "Falcons"
+              },
+              "positionEligibility": [
+                "RB"
+              ]
+            },
+            "transactionStatus": {
+              "locked": {
+                "reason": "PREDRAFT"
+              },
+              "isLineupStatusLocked": true
+            },
+            "requestedGamesPeriod": {
+              "ordinal": 1,
+              "startEpochMilli": "1756807200000"
+            },
+            "viewingFormat": "TOTAL",
+            "viewingRange": {
+              "low": -1,
+              "high": -2
+            },
+            "displayGroup": "RUSHER",
+            "lastX": [
+              {
+                "duration": 1
+              },
+              {
+                "duration": 3
+              },
+              {
+                "duration": 5
+              }
+            ]
+          },
+          "draftedAt": {
+            "round": 1,
+            "slot": 2,
+            "overall": 2
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "WR",
+            "group": "START",
+            "eligibility": [
+              "WR"
+            ],
+            "min": 2,
+            "max": 7,
+            "start": 2,
+            "colors": [
+              "DRAFT_BOARD_BLUE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "WR",
+            "group": "START",
+            "eligibility": [
+              "WR"
+            ],
+            "min": 2,
+            "max": 7,
+            "start": 2,
+            "colors": [
+              "DRAFT_BOARD_BLUE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "TE",
+            "group": "START",
+            "eligibility": [
+              "TE"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_YELLOW"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "RB/WR/TE",
+            "group": "START",
+            "eligibility": [
+              "RB",
+              "WR",
+              "TE"
+            ],
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GREEN",
+              "DRAFT_BOARD_BLUE",
+              "DRAFT_BOARD_YELLOW"
+            ]
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "K",
+            "group": "START",
+            "eligibility": [
+              "K"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GRAY"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "D/ST",
+            "group": "START",
+            "eligibility": [
+              "D/ST"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_PURPLE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        }
+      ]
+    },
+    {
+      "teamId": 1807901,
+      "lineup": [
+        {
+          "position": {
+            "label": "QB",
+            "group": "START",
+            "eligibility": [
+              "QB"
+            ],
+            "min": 1,
+            "max": 4,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_RED"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "RB",
+            "group": "START",
+            "eligibility": [
+              "RB"
+            ],
+            "min": 2,
+            "max": 6,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GREEN"
+            ]
+          },
+          "player": {
+            "proPlayer": {
+              "id": 13778,
+              "nameFull": "Saquon Barkley",
+              "nameShort": "S. Barkley",
+              "proTeamAbbreviation": "PHI",
+              "position": "RB",
+              "headshotUrl": "https://d26bvpybnxg29h.cloudfront.net/nfl/13778.png",
+              "nflByeWeek": 9,
+              "nameFirst": "Saquon",
+              "nameLast": "Barkley",
+              "proTeam": {
+                "abbreviation": "PHI",
+                "location": "Philadelphia",
+                "name": "Eagles"
+              },
+              "positionEligibility": [
+                "RB"
+              ]
+            },
+            "transactionStatus": {
+              "locked": {
+                "reason": "PREDRAFT"
+              },
+              "isLineupStatusLocked": true
+            },
+            "requestedGamesPeriod": {
+              "ordinal": 1,
+              "startEpochMilli": "1756807200000"
+            },
+            "viewingFormat": "TOTAL",
+            "viewingRange": {
+              "low": -1,
+              "high": -2
+            },
+            "displayGroup": "RUSHER",
+            "lastX": [
+              {
+                "duration": 1
+              },
+              {
+                "duration": 3
+              },
+              {
+                "duration": 5
+              }
+            ]
+          },
+          "draftedAt": {
+            "round": 1,
+            "slot": 3,
+            "overall": 3
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "WR",
+            "group": "START",
+            "eligibility": [
+              "WR"
+            ],
+            "min": 2,
+            "max": 7,
+            "start": 2,
+            "colors": [
+              "DRAFT_BOARD_BLUE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "WR",
+            "group": "START",
+            "eligibility": [
+              "WR"
+            ],
+            "min": 2,
+            "max": 7,
+            "start": 2,
+            "colors": [
+              "DRAFT_BOARD_BLUE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "TE",
+            "group": "START",
+            "eligibility": [
+              "TE"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_YELLOW"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "RB/WR/TE",
+            "group": "START",
+            "eligibility": [
+              "RB",
+              "WR",
+              "TE"
+            ],
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GREEN",
+              "DRAFT_BOARD_BLUE",
+              "DRAFT_BOARD_YELLOW"
+            ]
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "K",
+            "group": "START",
+            "eligibility": [
+              "K"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GRAY"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "D/ST",
+            "group": "START",
+            "eligibility": [
+              "D/ST"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_PURPLE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          },
+          "eligibleCount": 1
+        }
+      ]
+    },
+    {
+      "teamId": 1807896,
+      "lineup": [
+        {
+          "position": {
+            "label": "QB",
+            "group": "START",
+            "eligibility": [
+              "QB"
+            ],
+            "min": 1,
+            "max": 4,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_RED"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "RB",
+            "group": "START",
+            "eligibility": [
+              "RB"
+            ],
+            "min": 2,
+            "max": 6,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GREEN"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "WR",
+            "group": "START",
+            "eligibility": [
+              "WR"
+            ],
+            "min": 2,
+            "max": 7,
+            "start": 2,
+            "colors": [
+              "DRAFT_BOARD_BLUE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "WR",
+            "group": "START",
+            "eligibility": [
+              "WR"
+            ],
+            "min": 2,
+            "max": 7,
+            "start": 2,
+            "colors": [
+              "DRAFT_BOARD_BLUE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "TE",
+            "group": "START",
+            "eligibility": [
+              "TE"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_YELLOW"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "RB/WR/TE",
+            "group": "START",
+            "eligibility": [
+              "RB",
+              "WR",
+              "TE"
+            ],
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GREEN",
+              "DRAFT_BOARD_BLUE",
+              "DRAFT_BOARD_YELLOW"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "K",
+            "group": "START",
+            "eligibility": [
+              "K"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_GRAY"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "D/ST",
+            "group": "START",
+            "eligibility": [
+              "D/ST"
+            ],
+            "min": 1,
+            "max": 3,
+            "start": 1,
+            "colors": [
+              "DRAFT_BOARD_PURPLE"
+            ]
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          }
+        },
+        {
+          "position": {
+            "label": "BN",
+            "max": 7
+          }
+        }
+      ]
+    }
+  ],
+  "isInProgress": true
+}
