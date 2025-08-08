@@ -1,0 +1,30 @@
+# Node/bundlers (future-proof if you add Vite/Webpack/TS)
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/
+.next/
+out/
+coverage/
+
+# Env/secrets
+.env
+.env.*
+!.env.example
+
+# Editor/OS clutter
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs & temp
+*.log
+*.tmp
+*.swp
+
+# Generated assets (if you later script downloads)
+assets/cache/
+data/cache/
