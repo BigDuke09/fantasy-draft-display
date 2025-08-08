@@ -178,32 +178,64 @@ function renderGrid(picks) {
     .map(p => p.team_name);
 
   const numRounds = Math.max(...picks.map(p => p.round), 22);
+  const teamCount = teamOrder.length || 10;
+  grid.style.setProperty('--team-count', teamCount);
 
   // Header row
+{
+  // LEFT header round cell (label)
+  const leftHdr = document.createElement('div');
+  leftHdr.className = 'round-cell header left';
+  leftHdr.textContent = 'Rnd';
+  grid.appendChild(leftHdr);
+
+  // Team headers
   teamOrder.forEach(teamName => {
     const cell = document.createElement('div');
     cell.className = 'draft-cell header-cell';
-    const round1Pick = round1.find(p => p.team_name === teamName);
-    cell.textContent = round1Pick?.team_initials || teamName.slice(0, 3).toUpperCase();
+    cell.textContent = teamName;
     grid.appendChild(cell);
   });
 
-  // Rows for each round
-  for (let round = 1; round <= numRounds; round++) {
-    teamOrder.forEach(teamName => {
-      const cell = document.createElement('div');
-      const pick = picks.find(p => p.round === round && p.team_name === teamName);
-      if (pick) {
-        const posClass = pick.position ? `pos-${pick.position.toUpperCase()}` : '';
-        cell.className = `draft-cell ${posClass}`;
-        cell.textContent = `${pick.player_name} (${pick.position})`;
-      } else {
-        cell.className = 'draft-cell';
-        cell.textContent = '';
-      }
-      grid.appendChild(cell);
-    });
-  }
+  // RIGHT header round cell (label)
+  const rightHdr = document.createElement('div');
+  rightHdr.className = 'round-cell header right';
+  rightHdr.textContent = 'Rnd';
+  grid.appendChild(rightHdr);
+}
+
+
+  // Body rows: one per round
+for (let round = 1; round <= numRounds; round++) {
+  // LEFT round badge
+  const left = document.createElement('div');
+  left.className = 'round-cell left';
+  left.textContent = `R${round}`;
+  grid.appendChild(left);
+
+  // Team cells for this round
+  teamOrder.forEach(teamName => {
+    const cell = document.createElement('div');
+    const pick = picks.find(p => p.round === round && p.team_name === teamName);
+    if (pick) {
+      const posClass = pick.position ? `pos-${pick.position.toUpperCase()}` : '';
+      cell.className = `draft-cell ${posClass}`;
+      cell.textContent = `${pick.player_name} (${pick.position})`;
+    } else {
+      cell.className = 'draft-cell';
+      cell.textContent = '';
+    }
+    grid.appendChild(cell);
+  });
+
+  // RIGHT round badge
+  const right = document.createElement('div');
+  right.className = 'round-cell right';
+  right.textContent = `R${round}`;
+  grid.appendChild(right);
+}
+
+
 }
 
 function setChyronRoundNumbers(currentRound) {
