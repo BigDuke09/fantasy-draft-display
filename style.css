@@ -47,7 +47,7 @@ body {
 
 #draft-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: 56px repeat(var(--team-count, 10), 1fr) 56px;
   grid-auto-rows: 42px; /* ~22 rows at 1080p */
   border: 2px solid #444;
   background: #111;
@@ -116,3 +116,20 @@ body {
   0%   { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
 }
+
+/* Round-number bookend cells (left/right) */
+.round-cell {
+  background: #1b1b1b;
+  color: gold;
+  font-weight: 700;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.round-cell.left  { position: sticky; left: 0;  z-index: 2; }
+.round-cell.right { position: sticky; right: 0; z-index: 2; }
+
+.round-cell.header { background: #222; color: gold; font-weight: 800; }
