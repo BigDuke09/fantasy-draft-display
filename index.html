@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fantasy Draft Display</title>
+  <title>Fantasy Football Live Draft Board</title>
+  <meta name="description" content="Live Fantasy Football Draft Board with real-time updates, pick announcements, and ESPN-style chyron.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -12,13 +13,17 @@
     <div id="pick-announcement" class="hidden"></div>
 
     <!-- Main draft board -->
-    <div id="draft-board"></div>
+    <div id="board-wrapper">
+       <div id="draft-grid"></div>
+    </div>
 
     <!-- Chyron -->
     <div id="chyron-wrapper">
+       <div id="chyron-left-round"></div>
        <div id="chyron"></div>
+       <div id="chyron-right-round"></div>
     </div>
-
+  </div>
 
   <script src="script.js"></script>
 </body>

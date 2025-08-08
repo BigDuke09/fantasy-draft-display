@@ -37,27 +37,82 @@ body {
   border-bottom: 1px solid #333;
 }
 
+
+
+#board-wrapper {
+  margin-bottom: 40px; /* leave room for chyron */
+  overflow-x: auto;
+  max-height: 90vh;
+}
+
+#draft-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-auto-rows: 42px; /* ~22 rows at 1080p */
+  border: 2px solid #444;
+  background: #111;
+  color: #fff;
+  font-family: sans-serif;
+  text-align: center;
+  font-size: 16px;
+}
+
+.draft-cell {
+  border: 1px solid #333;
+  padding: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.header-cell {
+  background: #222;
+  font-weight: bold;
+  color: gold;
+}
+
+
+/* Position colors */
+.pos-QB  { background-color: #1f77b4; color: #fff; }
+.pos-RB  { background-color: #2ca02c; color: #fff; }
+.pos-WR  { background-color: #d62728; color: #fff; }
+.pos-TE  { background-color: #ff7f0e; color: #fff; }
+.pos-DEF { background-color: #7f7f7f; color: #fff; }
+.pos-K   { background-color: #bcbd22; color: #000; }
+
+/* ESPN-style chyron */
 #chyron-wrapper {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: #000;
-  overflow: hidden;
-  height: 30px;
-  border-top: 2px solid gold;
+  background: #222;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  border-top: 3px solid gold;
+  font-family: sans-serif;
+}
+
+#chyron-left-round, #chyron-right-round {
+  background: gold;
+  color: #000;
+  font-weight: bold;
+  padding: 0 10px;
+  font-size: 18px;
 }
 
 #chyron {
   display: inline-block;
   white-space: nowrap;
   color: gold;
-  font-size: 16px;
+  font-size: 18px;
   padding-left: 100%;
-  animation: scroll-chyron 30s linear infinite;
+  animation: scroll-chyron 60s linear infinite;
+  flex: 1;
 }
 
+/* Slightly slower scroll by default */
 @keyframes scroll-chyron {
   0%   { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
 }
-

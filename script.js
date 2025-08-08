@@ -1,5 +1,7 @@
 // 🟩 CONFIG
-const FLEAFLICKER_URL = 'https://corsproxy.io/?https://www.fleaflicker.com/api/FetchLeagueDraftBoard?sport=NFL&league_id=350963&season=2025&draft_number=0';
+const FLEAFLICKER_URL = 'mock/draftboard_btks_2024.json';
+// const FLEAFLICKER_URL = 'https://corsproxy.io/?https://www.fleaflicker.com/api/FetchLeagueDraftBoard?sport=NFL&league_id=350963&season=2025&draft_number=0';
+
 const POLL_INTERVAL_MS = 10000; // every 10 seconds
 const ANNOUNCE_INTERVAL_MS = 5000; // every 5 seconds
 
@@ -7,6 +9,49 @@ const ANNOUNCE_INTERVAL_MS = 5000; // every 5 seconds
 let lastSeenOverall = 0;
 let pickQueue = [];
 let isAnnouncing = false;
+let chyronPicks = [];
+let teamOrder = [];
+
+function buildBoard(picks) {
+  const grid = document.getElementById('draft-grid');
+  grid.innerHTML = '';
+
+  // Set team order from Round 1 only once
+  if (teamOrder.length === 0) {
+    teamOrder = picks
+      .filter(p => p.round === 1)
+      .sort((a, b) => a.slot - b.slot) // slot should be correct order for Round 1
+      .map(p => p.team_name);
+  }
+
+  // Create rows for 22 rounds
+  for (let round = 1; round <= 22; round++) {
+    const row = document.createElement('div');
+    row.classList.add('round-row');
+
+    // Create cells in the fixed team order
+    teamOrder.forEach(teamName => {
+      const pick = picks.find(
+        p => p.round === round && p.team_name === teamName
+      );
+
+      const cell = document.createElement('div');
+      cell.classList.add('pick-cell');
+
+      if (pick) {
+        cell.innerHTML = `
+          <div class="pick-num">${pick.overall}</div>
+          <div class="player">${pick.player_name}</div>
+          <div class="pos-team">${pick.position} - ${pick.nfl_team}</div>
+        `;
+      }
+      row.appendChild(cell);
+    });
+
+    grid.appendChild(row);
+  }
+}
+
 
 // 🟥 MAIN POLLING FUNCTION
 async function pollDraftData() {
@@ -15,49 +60,65 @@ async function pollDraftData() {
     const data = await response.json();
 
     const allPicks = extractPicks(data).sort((a, b) => a.overall - b.overall);
-    const newPicks = allPicks
-      .filter(p => p.overall > lastSeenOverall);
+    const newPicks = allPicks.filter(p => p.overall > lastSeenOverall);
 
     if (newPicks.length > 0) {
       pickQueue.push(...newPicks);
       lastSeenOverall = newPicks[newPicks.length - 1].overall;
     }
 
-    updateBoard(allPicks);
     updateChyron(allPicks);
+    renderGrid(allPicks);
+
   } catch (err) {
     console.error('Polling failed:', err);
   }
 }
 
 // 🟧 QUEUED ANNOUNCEMENT PROCESSOR
-function processQueue() {
-  if (isAnnouncing || pickQueue.length === 0) return;
-
-  const nextPick = pickQueue.shift();
-  announcePick(nextPick);
-}
-
-// 🟩 EXTRACT PICK DATA FROM API JSON
 function extractPicks(data) {
   const picks = [];
-  data.rows.forEach(row => {
-    row.cells.forEach(cell => {
+
+  if (Array.isArray(data.orderedSelections) && data.orderedSelections.length) {
+    data.orderedSelections.forEach(sel => {
+      const p = sel.player?.proPlayer || sel.player || {};
+      const proTeamName = p.proTeam?.name || p.proTeamAbbreviation || '';
+      picks.push({
+        round: sel.slot.round,
+        overall: sel.slot.overall,
+        pickInRound: sel.slot.slot,  // 1-based
+        team_name: sel.team?.name || '',
+        team_initials: sel.team?.initials || '',
+        player_name: p.nameFull || '',
+        position: p.position || '',
+        nfl_team: proTeamName,
+        headshot: p.headshotUrl || ''
+      });
+    });
+    return picks;
+  }
+
+  // Fallback for older mocks that actually embed players in rows
+  (data.rows || []).forEach(row => {
+    (row.cells || []).forEach(cell => {
       if (cell.player) {
-        const p = cell.player.proPlayer;
+        const p = cell.player.proPlayer || cell.player;
+        const proTeamName = p.proTeam?.name || p.proTeamAbbreviation || '';
         picks.push({
           round: row.round,
           overall: cell.slot.overall,
+          pickInRound: cell.slot.slot, // if present
           team_name: cell.team.name,
           team_initials: cell.team.initials || '',
           player_name: p.nameFull,
           position: p.position,
-          nfl_team: p.proTeam.name,
+          nfl_team: proTeamName,
           headshot: p.headshotUrl || ''
         });
       }
     });
   });
+
   return picks;
 }
 
@@ -79,31 +140,78 @@ function announcePick(pick) {
   }, 4000);
 }
 
-// 📋 BIG BOARD UPDATE
-function updateBoard(picks) {
-  const el = document.getElementById('draft-board');
-  const sorted = picks.slice().sort((a, b) => a.overall - b.overall);
-  el.innerHTML = sorted.map(pick =>
-    `<div class="pick">
-      ${pick.overall}. ${pick.player_name} (${pick.position}, ${pick.nfl_team}) - ${pick.team_name}
-    </div>`
-  ).join('');
-}
-
 // 📜 CHYRON SCROLLING TEXT
 function updateChyron(picks) {
   const el = document.getElementById('chyron');
-  const sorted = picks.slice().sort((a, b) => a.overall - b.overall);
-  el.innerText = sorted
-    .map(p => `${p.overall}. ${p.player_name} (${p.position}, ${p.nfl_team})`)
-    .join(' ● ');
 
-  // Restart animation
-  el.style.animation = 'none';
-  el.offsetHeight;
-  el.style.animation = null;
+  const newChyronItems = picks
+    .filter(p => !chyronPicks.includes(p.overall))
+    .sort((a, b) => a.overall - b.overall)
+    .map(p => {
+      chyronPicks.push(p.overall);
+      return `${p.overall}. ${p.player_name} (${p.position}, ${p.nfl_team})`;
+    });
+
+  if (newChyronItems.length > 0) {
+    el.innerText += (el.innerText ? ' ● ' : '') + newChyronItems.join(' ● ');
+
+    // Calculate dynamic scroll speed
+    const textWidth = el.scrollWidth; // actual rendered pixel width
+    const pxPerSecond = 50; // slower = smaller number, faster = bigger number
+    const duration = textWidth / pxPerSecond;
+
+    el.style.animationDuration = `${duration}s`;
+  }
 }
+
+
+
+// 📊 RENDER GRID BIG BOARD (10x22)
+function renderGrid(picks) {
+  const grid = document.getElementById('draft-grid');
+  grid.innerHTML = '';
+
+  // Lock team order from Round 1
+  const round1 = picks.filter(p => p.round === 1);
+  const teamOrder = round1
+    .sort((a, b) => a.pickInRound - b.pickInRound)
+    .map(p => p.team_name);
+
+  const numRounds = Math.max(...picks.map(p => p.round), 22);
+
+  // Header row
+  teamOrder.forEach(teamName => {
+    const cell = document.createElement('div');
+    cell.className = 'draft-cell header-cell';
+    const round1Pick = round1.find(p => p.team_name === teamName);
+    cell.textContent = round1Pick?.team_initials || teamName.slice(0, 3).toUpperCase();
+    grid.appendChild(cell);
+  });
+
+  // Rows for each round
+  for (let round = 1; round <= numRounds; round++) {
+    teamOrder.forEach(teamName => {
+      const cell = document.createElement('div');
+      const pick = picks.find(p => p.round === round && p.team_name === teamName);
+      if (pick) {
+        const posClass = pick.position ? `pos-${pick.position.toUpperCase()}` : '';
+        cell.className = `draft-cell ${posClass}`;
+        cell.textContent = `${pick.player_name} (${pick.position})`;
+      } else {
+        cell.className = 'draft-cell';
+        cell.textContent = '';
+      }
+      grid.appendChild(cell);
+    });
+  }
+}
+
+function setChyronRoundNumbers(currentRound) {
+  document.getElementById('chyron-left-round').textContent = `R${currentRound}`;
+  document.getElementById('chyron-right-round').textContent = `R${currentRound}`;
+}
+
 
 // 🚀 START POLLING & ANNOUNCING
 setInterval(pollDraftData, POLL_INTERVAL_MS);
-setInterval(processQueue, ANNOUNCE_INTERVAL_MS);
+// setInterval(processQueue, ANNOUNCE_INTERVAL_MS);
