@@ -133,3 +133,27 @@ body {
 .round-cell.right { position: sticky; right: 0; z-index: 2; }
 
 .round-cell.header { background: #222; color: gold; font-weight: 800; }
+
+/* Two-line pick cells */
+.draft-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2px 6px;
+  line-height: 1.15;
+}
+
+.player-line {
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta-line {
+  font-size: 0.85em;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -12,6 +12,26 @@ let isAnnouncing = false;
 let chyronPicks = [];
 let teamOrder = [];
 
+// Team meta (global, keyed by teamId)
+let TEAM_META = new Map();
+
+async function loadTeamMeta() {
+  // adjust path if you put the file somewhere else
+  const res = await fetch('data/fleaflicker_team_meta.json');
+  if (!res.ok) throw new Error('Failed to load team meta');
+  const arr = await res.json();
+  TEAM_META = new Map(arr.map(t => [t.teamId, t]));
+}
+
+function draftHeaderForTeam(teamId, fallbackName) {
+  const meta = TEAM_META.get(teamId);
+  const custom = (meta?.CustomDraftBoardHeader || '').trim();
+  return custom || fallbackName;
+}
+
+
+
+
 function buildBoard(picks) {
   const grid = document.getElementById('draft-grid');
   grid.innerHTML = '';
@@ -87,11 +107,15 @@ function extractPicks(data) {
         round: sel.slot.round,
         overall: sel.slot.overall,
         pickInRound: sel.slot.slot,  // 1-based
+        team_id: sel.team?.id || null,           // ⬅️ NEW
         team_name: sel.team?.name || '',
         team_initials: sel.team?.initials || '',
         player_name: p.nameFull || '',
         position: p.position || '',
-        nfl_team: proTeamName,
+        nfl_abbr: p.proTeam?.abbreviation || p.proTeamAbbreviation || '',
+        nfl_team: p.proTeam?.name || '',         // surname (e.g., "Chiefs")
+        nfl_city: p.proTeam?.location || '',     // e.g., "Kansas City"
+        nfl_full: p.proTeam?.location && p.proTeam?.name ? `${p.proTeam.location} ${p.proTeam.name}` : '',
         headshot: p.headshotUrl || ''
       });
     });
@@ -108,11 +132,15 @@ function extractPicks(data) {
           round: row.round,
           overall: cell.slot.overall,
           pickInRound: cell.slot.slot, // if present
+          team_id: cell.team.id || null, // ⬅️ NEW
           team_name: cell.team.name,
           team_initials: cell.team.initials || '',
           player_name: p.nameFull,
           position: p.position,
-          nfl_team: proTeamName,
+          nfl_abbr: p.proTeam?.abbreviation || p.proTeamAbbreviation || '',
+          nfl_team: p.proTeam?.name || '',         // surname (e.g., "Chiefs")
+          nfl_city: p.proTeam?.location || '',     // e.g., "Kansas City"
+          nfl_full: p.proTeam?.location && p.proTeam?.name ? `${p.proTeam.location} ${p.proTeam.name}` : '',
           headshot: p.headshotUrl || ''
         });
       }
@@ -171,17 +199,18 @@ function renderGrid(picks) {
   const grid = document.getElementById('draft-grid');
   grid.innerHTML = '';
 
-  // Lock team order from Round 1
+  // Lock team order from Round 1 (id + name)
   const round1 = picks.filter(p => p.round === 1);
   const teamOrder = round1
-    .sort((a, b) => a.pickInRound - b.pickInRound)
-    .map(p => p.team_name);
+  .sort((a, b) => a.pickInRound - b.pickInRound)
+  .map(p => ({ id: p.team_id, name: p.team_name }));
+
 
   const numRounds = Math.max(...picks.map(p => p.round), 22);
   const teamCount = teamOrder.length || 10;
   grid.style.setProperty('--team-count', teamCount);
 
-  // Header row
+ // Header row
 {
   // LEFT header round cell (label)
   const leftHdr = document.createElement('div');
@@ -190,10 +219,10 @@ function renderGrid(picks) {
   grid.appendChild(leftHdr);
 
   // Team headers
-  teamOrder.forEach(teamName => {
+  teamOrder.forEach(t => {
     const cell = document.createElement('div');
     cell.className = 'draft-cell header-cell';
-    cell.textContent = teamName;
+    cell.textContent = draftHeaderForTeam(t.id, t.name);
     grid.appendChild(cell);
   });
 
@@ -205,6 +234,7 @@ function renderGrid(picks) {
 }
 
 
+
   // Body rows: one per round
 for (let round = 1; round <= numRounds; round++) {
   // LEFT round badge
@@ -214,19 +244,39 @@ for (let round = 1; round <= numRounds; round++) {
   grid.appendChild(left);
 
   // Team cells for this round
-  teamOrder.forEach(teamName => {
-    const cell = document.createElement('div');
-    const pick = picks.find(p => p.round === round && p.team_name === teamName);
-    if (pick) {
-      const posClass = pick.position ? `pos-${pick.position.toUpperCase()}` : '';
-      cell.className = `draft-cell ${posClass}`;
-      cell.textContent = `${pick.player_name} (${pick.position})`;
-    } else {
-      cell.className = 'draft-cell';
-      cell.textContent = '';
-    }
-    grid.appendChild(cell);
-  });
+  teamOrder.forEach(t => {
+  const cell = document.createElement('div');
+
+  // find the pick by round + team_id
+  const pick = picks.find(p => p.round === round && p.team_id === t.id);
+
+  if (pick) {
+    const posClass = pick.position ? `pos-${pick.position.toUpperCase()}` : '';
+    cell.className = `draft-cell ${posClass}`;
+
+    // Two-line content:
+    // Line 1: Player Name
+    // Line 2: POSITION – NFL_SURNAME   ROUND:SLOT(OVERALL)
+    const metaLine = [
+      pick.position || '',
+      pick.nfl_abbr || ''
+    ].filter(Boolean).join(' – ');
+
+    cell.innerHTML = `
+      <div class="player-line">${pick.player_name}</div>
+      <div class="meta-line">${metaLine} &nbsp; ${round}:${pick.pickInRound}(${pick.overall})</div>
+    `;
+  } else {
+    cell.className = 'draft-cell';
+    cell.innerHTML = `
+      <div class="player-line"></div>
+      <div class="meta-line"></div>
+    `;
+  }
+
+  grid.appendChild(cell);
+});
+
 
   // RIGHT round badge
   const right = document.createElement('div');
@@ -245,5 +295,14 @@ function setChyronRoundNumbers(currentRound) {
 
 
 // 🚀 START POLLING & ANNOUNCING
-setInterval(pollDraftData, POLL_INTERVAL_MS);
+(async function init() {
+  try {
+    await loadTeamMeta();           // ⬅️ load once
+  } catch (e) {
+    console.warn('Team meta load failed:', e);
+  }
+  // kick off the first poll and then the interval
+  await pollDraftData();
+  setInterval(pollDraftData, POLL_INTERVAL_MS);
+})();
 // setInterval(processQueue, ANNOUNCE_INTERVAL_MS);

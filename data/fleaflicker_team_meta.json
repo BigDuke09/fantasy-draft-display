@@ -1,0 +1,82 @@
+[
+  {
+    "teamId": 442430,
+    "name": "Titanium Force",
+    "initials": "TF",
+    "CustomAbbreviation": "TF",
+    "CustomDraftBoardHeader": "Titanium Force",
+    "CustomName2": "Titanium Force"
+  },
+  {
+    "teamId": 442435,
+    "name": "EastSide Vandals",
+    "initials": "EV",
+    "CustomAbbreviation": "EV",
+    "CustomDraftBoardHeader": "EastSide Vandals",
+    "CustomName2": "EastSide Vandals"
+  },
+  {
+    "teamId": 442426,
+    "name": "The Militia",
+    "initials": "TM",
+    "CustomAbbreviation": "MIL",
+    "CustomDraftBoardHeader": "The Militia",
+    "CustomName2": "The Militia"
+  },
+  {
+    "teamId": 442427,
+    "name": "Spicy Jalapenos",
+    "initials": "SJ",
+    "CustomAbbreviation": "SJ",
+    "CustomDraftBoardHeader": "Spicy Jalapenos",
+    "CustomName2": "Spicy Jalapenos"
+  },
+  {
+    "teamId": 442424,
+    "name": "The Crush",
+    "initials": "TC",
+    "CustomAbbreviation": "CRU",
+    "CustomDraftBoardHeader": "The Crush",
+    "CustomName2": "The Crush"
+  },
+  {
+    "teamId": 442431,
+    "name": "Cary Grants",
+    "initials": "CG",
+    "CustomAbbreviation": "CG",
+    "CustomDraftBoardHeader": "Cary Grants",
+    "CustomName2": "Cary Grants"
+  },
+  {
+    "teamId": 442432,
+    "name": "The Hogbodies",
+    "initials": "TH",
+    "CustomAbbreviation": "HOG",
+    "CustomDraftBoardHeader": "The Hogbodies",
+    "CustomName2": "The Hogbodies"
+  },
+  {
+    "teamId": 442425,
+    "name": "Houston Scourge",
+    "initials": "HS",
+    "CustomAbbreviation": "HS",
+    "CustomDraftBoardHeader": "Houston Scourge",
+    "CustomName2": "Houston Scourge"
+  },
+  {
+    "teamId": 825743,
+    "name": "Multiple Scorgasms",
+    "initials": "MS",
+    "CustomAbbreviation": "MS",
+    "CustomDraftBoardHeader": "Multiple Scorgasms",
+    "CustomName2": "Multiple Scorgasms"
+  },
+  {
+    "teamId": 442423,
+    "name": "Rodents of Unusual Size",
+    "initials": "RO",
+    "CustomAbbreviation": "RUS",
+    "CustomDraftBoardHeader": "Rodents",
+    "CustomName2": "Rodents of Unusual Size"
+  }
+]
