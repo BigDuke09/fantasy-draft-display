@@ -1,30 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Fantasy Football Live Draft Board</title>
-  <meta name="description" content="Live Fantasy Football Draft Board with real-time updates, pick announcements, and ESPN-style chyron.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>Fantasy Draft Board</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Optional page-level frame so content isn't flush to the edges */
+    body {
+      margin: 0;
+      background: #0b0f14;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    header#app-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #0b0f14;
+      padding: 10px 12px;
+      border-bottom: 1px solid #18212d;
+      color: #e8eef6;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    main#app {
+      padding: 8px 8px 60px; /* leave space for chyron at bottom */
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <!-- Pick-in animation area -->
-    <div id="pick-announcement" class="hidden"></div>
+  <header id="app-header">
+    Dick Butkus Fantasy Football Draft 2024
+  </header>
 
-    <!-- Main draft board -->
-    <div id="board-wrapper">
-       <div id="draft-grid"></div>
-    </div>
+  <main id="app">
+    <!-- Draft grid renders here -->
+    <div id="draft-grid" aria-live="polite"></div>
+  </main>
 
-    <!-- Chyron -->
-    <div id="chyron-wrapper">
-       <div id="chyron-left-round"></div>
-       <div id="chyron"></div>
-       <div id="chyron-right-round"></div>
-    </div>
+  <!-- “Pick Is In” overlay (hidden until a pick is announced) -->
+  <div id="pick-announcement" class="hidden" role="dialog" aria-label="Pick announcement" aria-modal="true">
+    <div class="content"></div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Chyron / ticker bar -->
+  <div id="chyron" aria-live="polite">
+    <span id="chyron-left-round">ROUND 1</span>
+    <span id="chyron-text"></span>
+    <span id="chyron-right-round">ROUND 1</span>
+  </div>
+
+  <noscript>
+    <div style="padding:12px;color:#fff;background:#b00020">This page requires JavaScript to run.</div>
+  </noscript>
+
+  <!-- Your data file (mock) should sit next to this HTML unless you changed CONFIG.MOCK_URL -->
+  <!-- <script>window.CONFIG_OVERRIDE = { MODE: "mock", MOCK_URL: "draftboard_btks_2024.json" };</script> -->
+
+  <script defer src="script.js"></script>
 </body>
 </html>

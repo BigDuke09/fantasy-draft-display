@@ -1,159 +1,252 @@
+/* ===== Draft Board: aligned columns, compact fit, per-cell scrolling, full-cell position colors ===== */
+
+:root{
+  --round-col: 28px;          /* narrower round label columns */
+  --teams-count: 12;          /* JS overrides to actual team count */
+  --cell-pad: 4px;            /* tight padding to fit 22 rounds */
+  --row-gap: 0px;             /* no extra vertical gaps */
+  --hdr-bg: #0f141b;     /* flat, dark */
+  --hdr-fg: #dfe6f1;     /* lighter text for header */
+  --cell-bg: #0b1219;
+  --pick-bg: #101821;
+  --text: #f2f4f8;
+  --muted: #c9d1de;
+  --accent-gold: #d4af37;
+  --board-bg: #081017;
+}
+
+/* Page/frame */
 body {
-  font-family: sans-serif;
-  background-color: #111;
-  color: #fff;
   margin: 0;
-  padding: 0;
+  background: var(--board-bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-#pick-announcement {
-  background: #222;
-  padding: 20px;
-  text-align: center;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  border-bottom: 2px solid gold;
-  transition: opacity 1s ease;
-}
-
-#pick-announcement.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#pick-announcement img {
-  height: 100px;
-  border-radius: 8px;
-}
-
-#draft-board {
-  margin-top: 140px;
-  padding: 20px;
-}
-
-.pick {
-  padding: 4px 0;
-  border-bottom: 1px solid #333;
-}
-
-
-
-#board-wrapper {
-  margin-bottom: 40px; /* leave room for chyron */
-  overflow-x: auto;
-  max-height: 90vh;
-}
-
+/* Board container */
 #draft-grid {
+  font-size: clamp(10px, 0.9vw, 13px);   /* smaller baseline so 22 rounds fit at 1080p */
+  line-height: 1.06;
   display: grid;
-  grid-template-columns: 56px repeat(var(--team-count, 10), 1fr) 56px;
-  grid-auto-rows: 42px; /* ~22 rows at 1080p */
-  border: 2px solid #444;
-  background: #111;
-  color: #fff;
-  font-family: sans-serif;
-  text-align: center;
-  font-size: 16px;
+  row-gap: var(--row-gap);
+  padding: 4px 4px 45px; /* leave bottom space for chyron */
+  background: var(--board-bg);
+  box-sizing: border-box;
 }
 
-.draft-cell {
-  border: 1px solid #333;
-  padding: 4px;
-  overflow: hidden;
+/* Use the SAME template for header and data rows */
+#draft-grid .grid.header,
+#draft-grid .grid.row {
+  display: grid;
+  grid-template-columns: var(--round-col) repeat(var(--teams-count), minmax(0, 1fr)) var(--round-col);
+  column-gap: 2px;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+/* Prevent long content from forcing column width */
+#draft-grid .grid.header > *,
+#draft-grid .grid.row > * {
+  min-width: 0;
+}
+
+/* Header cells */
+#draft-grid .hdr {
+  background: var(--hdr-bg);
+  color: var(--hdr-fg);
+  font-weight: 1000;
+  text-align: center;
+  padding: var(--cell-pad);
+  border-radius: 4px;
+  box-sizing: border-box;
   white-space: nowrap;
+  letter-spacing: .02em;
+}
+
+#draft-grid .hdr.team {
+  background: #14202f;             /* darker panel for contrast */
+  color: #e8eef6;
+  font-weight: 1000;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border: 1px solid #253246;
+  border-radius: 4px;
+  box-shadow: inset 0 -3px 0 #d4af37;  /* gold underbar */
+  padding-top: calc(var(--cell-pad) + 1px);
+  padding-bottom: calc(var(--cell-pad) + 1px);
+  line-height: 1.05;
+}
+
+/* Round label cells (left/right) sticky */
+#draft-grid .hdr.round.sticky,
+#draft-grid .cell.round.sticky {
+  background: #182232;
+  color: #eaf1fb;
+  border: 1px solid #223046;
+  border-radius: 4px;
+  display: flex;                 /* center the content */
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  letter-spacing: .02em;
+  padding: 0;                     /* keep them tight to width */
+}
+#draft-grid .hdr.round.sticky {   /* "Rnd" header bubbles */
+  color: #d4af37;
+  box-shadow: inset 0 -2px 0 #d4af37;
+}
+#draft-grid .hdr.round.sticky:first-child,
+#draft-grid .cell.round.sticky:first-child { left: 0; }
+#draft-grid .hdr.round.sticky:last-child,
+#draft-grid .cell.round.sticky:last-child  { right: 0; }
+
+/* Data cells */
+#draft-grid .cell {
+  padding: var(--cell-pad);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+#draft-grid .cell.empty  { background: var(--cell-bg); opacity: .7; }
+#draft-grid .cell.pick   { background: var(--pick-bg); }
+
+/* Full-cell position colors (not tabs) */
+.pos-QB  { background: #123a6b; color: #ecf2f8; }  /* deep blue */
+.pos-RB  { background: #0f5a38; color: #e8f6ee; }  /* deep green */
+.pos-WR  { background: #7a3d06; color: #fff3e6; }  /* warm brown/orange */
+.pos-TE  { background: #4b236e; color: #f1e9fb; }  /* purple */
+.pos-K   { background: #3b3f4a; color: #f0f4fa; }  /* slate */
+.pos-DST,
+.pos-DEF { background: #0d4652; color: #e9f7fb; }  /* teal */
+ 
+/* Position-based full-cell colors (high specificity so they override .cell.pick) */
+#draft-grid .cell.pick.pos-QB  { background: #123a6b; color: #ecf2f8; }
+#draft-grid .cell.pick.pos-RB  { background: #0f5a38; color: #e8f6ee; }
+#draft-grid .cell.pick.pos-WR  { background: #7a3d06; color: #fff3e6; }
+#draft-grid .cell.pick.pos-TE  { background: #4b236e; color: #f1e9fb; }
+#draft-grid .cell.pick.pos-K   { background: #3b3f4a; color: #f0f4fa; }
+#draft-grid .cell.pick.pos-DST { background: #0d4652; color: #e9f7fb; }
+
+/* Ensure child text inherits the foreground color */
+#draft-grid .cell.pick .player,
+#draft-grid .cell.pick .meta { color: inherit; }
+/*#draft-grid .cell.pick .meta { color: inherit; }
+
+/* Meta remains slightly subdued but readable */
+#draft-grid .cell.pick .meta { opacity: .88; }
+
+
+/* Pick content (bounce marquee) */
+#draft-grid .cell.pick .player {
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;          /* clip inside the cell */
+  position: relative;        /* container for transform */
+}
+
+#draft-grid .cell.pick .player .scroll-text {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* When overflow detected, JS adds .marquee and sets:
+   --scroll-distance: <px>, --marquee-duration: <s>  */
+#draft-grid .cell.pick .player.marquee .scroll-text {
+  animation-name: marquee-bounce;
+  animation-duration: var(--marquee-duration, 4s);
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;         /* bounce */
+  animation-iteration-count: infinite;
+}
+
+@keyframes marquee-bounce {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-1 * var(--scroll-distance, 0px))); }
+}
+
+#draft-grid .cell.pick .meta {
+  color: inherit;     /* inherit the high-contrast foreground from the cell */
+  opacity: .88;            /* keep it slightly subdued */
+  font-size: 0.72em;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.header-cell {
-  background: #222;
-  font-weight: bold;
-  color: gold;
-}
+/* Announcement highlight (small, no layout shift) */
+.cell.pick.glow { box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 0 10px rgba(255,255,255,.35) inset; }
 
-
-/* Position colors */
-.pos-QB  { background-color: #1f77b4; color: #fff; }
-.pos-RB  { background-color: #2ca02c; color: #fff; }
-.pos-WR  { background-color: #d62728; color: #fff; }
-.pos-TE  { background-color: #ff7f0e; color: #fff; }
-.pos-DEF { background-color: #7f7f7f; color: #fff; }
-.pos-K   { background-color: #bcbd22; color: #000; }
-
-/* ESPN-style chyron */
-#chyron-wrapper {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #222;
-  display: flex;
-  align-items: center;
-  height: 40px;
-  border-top: 3px solid gold;
-  font-family: sans-serif;
-}
-
-#chyron-left-round, #chyron-right-round {
-  background: gold;
-  color: #000;
-  font-weight: bold;
-  padding: 0 10px;
-  font-size: 18px;
-}
-
+/* ===== Chyron ===== */
 #chyron {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #0a0e13;
+  border-top: 1px solid #1a2734;
+  padding: 5px 8px;
+  display: grid;
+  grid-template-columns: 140px 1fr 140px;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--text);
+}
+#chyron > #chyron-left-round,
+#chyron > #chyron-right-round {
+  background: #182232;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  border-radius: 999px;
+  text-align: center;
+  padding: 3px 6px;
+  font-size: clamp(10px, 0.9vw, 13px);
+  white-space: nowrap;
+}
+#chyron > #chyron-text {
   display: inline-block;
   white-space: nowrap;
-  color: gold;
-  font-size: 18px;
-  padding-left: 100%;
-  animation: scroll-chyron 60s linear infinite;
-  flex: 1;
+  overflow: hidden;
+  color: var(--text);
+  animation: chyron-scroll var(--chyron-duration, 40s) linear infinite;
 }
-
-/* Slightly slower scroll by default */
-@keyframes scroll-chyron {
-  0%   { transform: translateX(0%); }
+#chyron.paused { animation-play-state: paused !important; }
+@keyframes chyron-scroll {
+  0%   { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
 
-/* Round-number bookend cells (left/right) */
-.round-cell {
-  background: #1b1b1b;
-  color: gold;
-  font-weight: 700;
-  border: 1px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
+/* ===== “Pick Is In” Overlay (kept minimal; disabled right now) ===== */
+#pick-announcement.hidden { display: none; }
+#pick-announcement {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,12,17,.9);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
 }
-
-.round-cell.left  { position: sticky; left: 0;  z-index: 2; }
-.round-cell.right { position: sticky; right: 0; z-index: 2; }
-
-.round-cell.header { background: #222; color: gold; font-weight: 800; }
-
-/* Two-line pick cells */
-.draft-cell {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2px 6px;
-  line-height: 1.15;
+#pick-announcement .stinger {
+  text-align: center;
+  padding: 14px 18px;
+  border: 2px solid var(--accent-gold);
+  border-radius: 10px;
+  background: linear-gradient(180deg,#0e1520,#0a0e13);
 }
-
-.player-line {
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#pick-announcement .stinger .title {
+  font-size: clamp(18px, 2.2vw, 32px);
+  color: var(--accent-gold);
+  letter-spacing: .1em;
+  margin-bottom: 6px;
 }
-
-.meta-line {
-  font-size: 0.85em;
-  opacity: 0.9;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#pick-announcement .stinger .team {
+  font-size: clamp(13px, 1.4vw, 20px);
+  color: #90b4ff;
+  margin-bottom: 4px;
+}
+#pick-announcement .stinger .player {
+  font-size: clamp(16px, 1.9vw, 28px);
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+#pick-announcement .stinger .meta {
+  font-size: clamp(10px, 1.0vw, 14px);
+  opacity: .9;
 }
