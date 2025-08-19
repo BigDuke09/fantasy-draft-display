@@ -1,308 +1,378 @@
-// 🟩 CONFIG
-const FLEAFLICKER_URL = 'mock/draftboard_btks_2024.json';
-// const FLEAFLICKER_URL = 'https://corsproxy.io/?https://www.fleaflicker.com/api/FetchLeagueDraftBoard?sport=NFL&league_id=350963&season=2025&draft_number=0';
+/* Draft Board Script
+   Focus: aligned columns, per-cell scrolling names, compact fit, team meta headers
+   - ENABLE_POLLING: off by default for layout debugging
+   - ANNOUNCEMENTS_ENABLED: off by default
+*/
 
-const POLL_INTERVAL_MS = 10000; // every 10 seconds
-const ANNOUNCE_INTERVAL_MS = 5000; // every 5 seconds
+// -------------------------- Config --------------------------
+const CONFIG = {
+  MODE: "mock",                           // "mock" | "live"
+  MOCK_URL: "mock/draftboard_btks_2024.json",
+  LIVE_URL: "",
 
-// 🟨 STATE
-let lastSeenOverall = 0;
-let pickQueue = [];
-let isAnnouncing = false;
-let chyronPicks = [];
-let teamOrder = [];
+  ENABLE_POLLING: false,                  // <- OFF for alignment work
+  POLL_MS: 10000,
+  ANNOUNCEMENTS_ENABLED: false,           // <- OFF for alignment work
+  ANNOUNCE_FREEZE_MS: 2500,
 
-// Team meta (global, keyed by teamId)
-let TEAM_META = new Map();
+  MAX_CHYRON_ITEMS: 40,
+
+  // Team meta (use your file with CustomDraftBoardHeader)
+  TEAM_META_FILE: "data/fleaflicker_team_meta.json"
+};
+
+// -------------------------- State --------------------------
+const state = {
+  picks: [],
+  teamOrder: [],
+  pickQueue: [],
+  isAnnouncing: false,
+  chyronItems: [],
+  teamMetaByName: null   // { "Original Team Name" : "Display Label" }
+};
+
+// -------------------------- DOM --------------------------
+const elGrid            = document.getElementById("draft-grid");
+const elOverlay         = document.getElementById("pick-announcement");
+const elOverlayContent  = elOverlay ? elOverlay.querySelector(".content") : null;
+const elChyron          = document.getElementById("chyron");
+const elChyronText      = document.getElementById("chyron-text") || document.getElementById("chyron");
+const elChyronLeft      = document.getElementById("chyron-left-round");
+const elChyronRight     = document.getElementById("chyron-right-round");
+
+// -------------------------- Utilities --------------------------
+function resolveUrl(relativeOrAbsolute) {
+  return new URL(relativeOrAbsolute, window.location.href).toString();
+}
+
+function posClass(position) {
+  const raw = String(position || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); // strips "/", spaces, etc
+  const alias = { PK: "K", DEF: "DST", DSTDEF: "DST" };
+  const key = alias[raw] || raw;
+  return `pos-${key}`;
+}
+
+
+function fetchJSON(urlLike) {
+  const url = resolveUrl(urlLike);
+  return fetch(url, { cache: "no-store" })
+    .then(async (r) => {
+      const text = await r.text();
+      if (!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText} @ ${url}\n${text.slice(0,200)}`);
+      return JSON.parse(text);
+    });
+}
+
+function deriveTeamOrder(picks) {
+  const r1 = picks.filter(p => p.round === 1).sort((a,b)=>a.slot-b.slot);
+  if (r1.length) return r1.map(p => p.team);
+  const seen = new Set();
+  const order = [];
+  for (const p of picks) if (!seen.has(p.team)) { seen.add(p.team); order.push(p.team); }
+  return order;
+}
+
+// Normalize a raw record to our pick shape
+function normalizePick(rec) {
+  // FleaFlicker nested structure
+  const hasFF = rec?.slot && rec?.player?.proPlayer && rec?.team?.name;
+  if (hasFF) {
+    const pro = rec.player.proPlayer;
+    const round   = Number(rec.slot.round || 0);
+    const slot    = Number(rec.slot.slot || 0);
+    const overall = Number(rec.slot.overall || ((round - 1) * 12 + slot) || 0);
+
+    const team       = String(rec.team.name || "Team");
+    const playerName = String(pro.nameFull || pro.nameShort || `${pro.nameFirst ?? ""} ${pro.nameLast ?? ""}`).trim();
+    const position   = String(pro.position || "").toUpperCase();
+    const teamAbbr   = String(pro.proTeamAbbreviation || pro.proTeam?.abbreviation || "").toUpperCase();
+    const headshot   = pro.headshotUrl || "https://a.espncdn.com/i/headshots/nfl/players/full/0.png";
+
+    return { round, slot, overall, team, playerName, position, teamAbbr, headshot };
+  }
+
+  // Flat shapes (fallback)
+  const round   = Number(rec.round ?? rec.rnd ?? 0);
+  const slot    = Number(rec.slot ?? rec.pick ?? rec.pickInRound ?? 0);
+  const overall = Number(
+    rec.overall ??
+    rec.overallPick ??
+    ((round - 1) * 12 + slot) ??
+    0
+  );
+  const team       = String(rec.team ?? rec.teamName ?? rec.owner ?? rec.franchise ?? "Team");
+  const playerName = String(rec.player ?? rec.playerName ?? rec.name ?? "").trim();
+  const position   = String(rec.pos ?? rec.position ?? "").toUpperCase();
+  const teamAbbr   = String(rec.nfl ?? rec.teamAbbr ?? rec.proTeam ?? "").toUpperCase();
+  const headshot   = rec.headshot || "https://a.espncdn.com/i/headshots/nfl/players/full/0.png";
+
+  return { round, slot, overall, team, playerName, position, teamAbbr, headshot };
+}
+
+// Accept FleaFlicker-style mock: { orderedSelections: [...] } and a few alternates.
+function extractPicks(raw) {
+  if (!raw) return [];
+  let arr = [];
+  if (Array.isArray(raw)) {
+    arr = raw;
+  } else if (raw.orderedSelections) {
+    arr = raw.orderedSelections;
+  } else if (raw.picks) {
+    arr = raw.picks;
+  } else if (raw.selections) {
+    arr = raw.selections;
+  } else if (raw.data) {
+    arr = raw.data;
+  } else {
+    const firstArrayKey = Object.keys(raw).find(
+      k => Array.isArray(raw[k]) && raw[k].length && typeof raw[k][0] === "object"
+    );
+    if (firstArrayKey) arr = raw[firstArrayKey];
+  }
+
+  return arr
+    .map(normalizePick)
+    .filter(p => p.playerName)
+    .sort((a,b) => a.overall - b.overall);
+}
+
+function deriveCurrentRound(picks, teamsCount) {
+  if (!picks.length || !teamsCount) return 1;
+  const maxOverall = Math.max(...picks.map(p => p.overall));
+  return Math.max(1, Math.ceil(maxOverall / teamsCount));
+}
+
+// -------------------------- Team Meta (exact file you added) --------------------------
+function normKey(s) { return String(s || "").trim().toLowerCase(); }
 
 async function loadTeamMeta() {
-  // adjust path if you put the file somewhere else
-  const res = await fetch('data/fleaflicker_team_meta.json');
-  if (!res.ok) throw new Error('Failed to load team meta');
-  const arr = await res.json();
-  TEAM_META = new Map(arr.map(t => [t.teamId, t]));
-}
-
-function draftHeaderForTeam(teamId, fallbackName) {
-  const meta = TEAM_META.get(teamId);
-  const custom = (meta?.CustomDraftBoardHeader || '').trim();
-  return custom || fallbackName;
-}
-
-
-
-
-function buildBoard(picks) {
-  const grid = document.getElementById('draft-grid');
-  grid.innerHTML = '';
-
-  // Set team order from Round 1 only once
-  if (teamOrder.length === 0) {
-    teamOrder = picks
-      .filter(p => p.round === 1)
-      .sort((a, b) => a.slot - b.slot) // slot should be correct order for Round 1
-      .map(p => p.team_name);
-  }
-
-  // Create rows for 22 rounds
-  for (let round = 1; round <= 22; round++) {
-    const row = document.createElement('div');
-    row.classList.add('round-row');
-
-    // Create cells in the fixed team order
-    teamOrder.forEach(teamName => {
-      const pick = picks.find(
-        p => p.round === round && p.team_name === teamName
-      );
-
-      const cell = document.createElement('div');
-      cell.classList.add('pick-cell');
-
-      if (pick) {
-        cell.innerHTML = `
-          <div class="pick-num">${pick.overall}</div>
-          <div class="player">${pick.player_name}</div>
-          <div class="pos-team">${pick.position} - ${pick.nfl_team}</div>
-        `;
-      }
-      row.appendChild(cell);
-    });
-
-    grid.appendChild(row);
-  }
-}
-
-
-// 🟥 MAIN POLLING FUNCTION
-async function pollDraftData() {
   try {
-    const response = await fetch(FLEAFLICKER_URL);
-    const data = await response.json();
-
-    const allPicks = extractPicks(data).sort((a, b) => a.overall - b.overall);
-    const newPicks = allPicks.filter(p => p.overall > lastSeenOverall);
-
-    if (newPicks.length > 0) {
-      pickQueue.push(...newPicks);
-      lastSeenOverall = newPicks[newPicks.length - 1].overall;
+    const json = await fetchJSON(CONFIG.TEAM_META_FILE);
+    // Your file format: array of objects with { name, CustomDraftBoardHeader, ... }
+    // We build a case-insensitive map based on 'name'.
+    const map = {};
+    if (Array.isArray(json)) {
+      for (const t of json) {
+        const key = normKey(t.name);
+        const label = t.CustomDraftBoardHeader || t.CustomName2 || t.CustomAbbreviation || t.initials || t.name;
+        if (key && label) map[key] = String(label);
+      }
     }
-
-    updateChyron(allPicks);
-    renderGrid(allPicks);
-
-  } catch (err) {
-    console.error('Polling failed:', err);
+    state.teamMetaByName = map;
+    return map;
+  } catch {
+    state.teamMetaByName = null;
+    return null;
   }
 }
 
-// 🟧 QUEUED ANNOUNCEMENT PROCESSOR
-function extractPicks(data) {
-  const picks = [];
-
-  if (Array.isArray(data.orderedSelections) && data.orderedSelections.length) {
-    data.orderedSelections.forEach(sel => {
-      const p = sel.player?.proPlayer || sel.player || {};
-      const proTeamName = p.proTeam?.name || p.proTeamAbbreviation || '';
-      picks.push({
-        round: sel.slot.round,
-        overall: sel.slot.overall,
-        pickInRound: sel.slot.slot,  // 1-based
-        team_id: sel.team?.id || null,           // ⬅️ NEW
-        team_name: sel.team?.name || '',
-        team_initials: sel.team?.initials || '',
-        player_name: p.nameFull || '',
-        position: p.position || '',
-        nfl_abbr: p.proTeam?.abbreviation || p.proTeamAbbreviation || '',
-        nfl_team: p.proTeam?.name || '',         // surname (e.g., "Chiefs")
-        nfl_city: p.proTeam?.location || '',     // e.g., "Kansas City"
-        nfl_full: p.proTeam?.location && p.proTeam?.name ? `${p.proTeam.location} ${p.proTeam.name}` : '',
-        headshot: p.headshotUrl || ''
-      });
-    });
-    return picks;
-  }
-
-  // Fallback for older mocks that actually embed players in rows
-  (data.rows || []).forEach(row => {
-    (row.cells || []).forEach(cell => {
-      if (cell.player) {
-        const p = cell.player.proPlayer || cell.player;
-        const proTeamName = p.proTeam?.name || p.proTeamAbbreviation || '';
-        picks.push({
-          round: row.round,
-          overall: cell.slot.overall,
-          pickInRound: cell.slot.slot, // if present
-          team_id: cell.team.id || null, // ⬅️ NEW
-          team_name: cell.team.name,
-          team_initials: cell.team.initials || '',
-          player_name: p.nameFull,
-          position: p.position,
-          nfl_abbr: p.proTeam?.abbreviation || p.proTeamAbbreviation || '',
-          nfl_team: p.proTeam?.name || '',         // surname (e.g., "Chiefs")
-          nfl_city: p.proTeam?.location || '',     // e.g., "Kansas City"
-          nfl_full: p.proTeam?.location && p.proTeam?.name ? `${p.proTeam.location} ${p.proTeam.name}` : '',
-          headshot: p.headshotUrl || ''
-        });
-      }
-    });
-  });
-
-  return picks;
+function draftHeaderForTeam(teamName) {
+  if (!state.teamMetaByName) return teamName;
+  const hit = state.teamMetaByName[normKey(teamName)];
+  return hit || teamName;
 }
 
-// 🟦 ANIMATE PICK-IN DISPLAY
-function announcePick(pick) {
-  isAnnouncing = true;
-  const el = document.getElementById('pick-announcement');
-  el.innerHTML = `
-    <h2>The Pick is In!</h2>
-    <img src="${pick.headshot}" alt="${pick.player_name}" />
-    <p><strong>${pick.player_name}</strong> (${pick.position}, ${pick.nfl_team})</p>
-    <p>Selected by <strong>${pick.team_name}</strong> in Round ${pick.round}</p>
-  `;
-  el.classList.remove('hidden');
-
-  setTimeout(() => {
-    el.classList.add('hidden');
-    isAnnouncing = false;
-  }, 4000);
-}
-
-// 📜 CHYRON SCROLLING TEXT
-function updateChyron(picks) {
-  const el = document.getElementById('chyron');
-
-  const newChyronItems = picks
-    .filter(p => !chyronPicks.includes(p.overall))
-    .sort((a, b) => a.overall - b.overall)
-    .map(p => {
-      chyronPicks.push(p.overall);
-      return `${p.overall}. ${p.player_name} (${p.position}, ${p.nfl_team})`;
-    });
-
-  if (newChyronItems.length > 0) {
-    el.innerText += (el.innerText ? ' ● ' : '') + newChyronItems.join(' ● ');
-
-    // Calculate dynamic scroll speed
-    const textWidth = el.scrollWidth; // actual rendered pixel width
-    const pxPerSecond = 50; // slower = smaller number, faster = bigger number
-    const duration = textWidth / pxPerSecond;
-
-    el.style.animationDuration = `${duration}s`;
-  }
-}
-
-
-
-// 📊 RENDER GRID BIG BOARD (10x22)
+// -------------------------- Rendering --------------------------
 function renderGrid(picks) {
-  const grid = document.getElementById('draft-grid');
-  grid.innerHTML = '';
+  if (!elGrid) return;
+  const teamOrder = state.teamOrder.length ? state.teamOrder : deriveTeamOrder(picks);
+  state.teamOrder = teamOrder;
+  const teamsCount = teamOrder.length || 12;
 
-  // Lock team order from Round 1 (id + name)
-  const round1 = picks.filter(p => p.round === 1);
-  const teamOrder = round1
-  .sort((a, b) => a.pickInRound - b.pickInRound)
-  .map(p => ({ id: p.team_id, name: p.team_name }));
+  // Ensure all rows use identical template (CSS reads this var)
+  elGrid.style.setProperty("--teams-count", teamsCount);
 
+  // How many rounds to show (cap to at least 22)
+  const maxRound = Math.max( (picks.length ? Math.max(...picks.map(p => p.round)) : 0), 22 );
 
-  const numRounds = Math.max(...picks.map(p => p.round), 22);
-  const teamCount = teamOrder.length || 10;
-  grid.style.setProperty('--team-count', teamCount);
+  // Map (round|team) -> pick
+  const byKey = new Map();
+  for (const p of picks) byKey.set(`${p.round}|${p.team}`, p);
 
- // Header row
-{
-  // LEFT header round cell (label)
-  const leftHdr = document.createElement('div');
-  leftHdr.className = 'round-cell header left';
-  leftHdr.textContent = 'Rnd';
-  grid.appendChild(leftHdr);
+  let html = "";
+  // Header row
+  html += `<div class="grid header">`;
+  html += `<div class="hdr round sticky">Rd.</div>`;
+  for (const t of teamOrder) html += `<div class="hdr team">${escapeHtml(draftHeaderForTeam(t))}</div>`;
+  html += `<div class="hdr round sticky">Rd.</div>`;
+  html += `</div>`;
 
-  // Team headers
-  teamOrder.forEach(t => {
-    const cell = document.createElement('div');
-    cell.className = 'draft-cell header-cell';
-    cell.textContent = draftHeaderForTeam(t.id, t.name);
-    grid.appendChild(cell);
+  // Data rows
+  for (let r = 1; r <= maxRound; r++) {
+    html += `<div class="grid row">`;
+    html += `<div class="cell round sticky">${r}</div>`;
+    for (const t of teamOrder) {
+      const p = byKey.get(`${r}|${t}`);
+      if (!p) {
+        html += `<div class="cell empty"></div>`;
+      } else {
+        const posCls = posClass(p.position);
+        html += `<div class="cell pick ${posCls}" data-round="${p.round}" data-team="${escapeAttr(t)}" data-overall="${p.overall}">` +
+                  `<div class="player"><span class="scroll-text">${escapeHtml(p.playerName)}</span></div>` +
+                  `<div class="meta">${escapeHtml(p.position)} • ${escapeHtml(p.teamAbbr)} • ${p.round}:${p.slot} (#${p.overall})</div>` +
+                `</div>`;
+      }
+    }
+    html += `<div class="cell round sticky">${r}</div>`;
+    html += `</div>`;
+  }
+
+  elGrid.innerHTML = html;
+  enableCellScrolling(); // apply marquee if a name overflows
+}
+
+function enableCellScrolling() {
+  const PX_PER_SECOND = 5; // tweak speed here (lower = slower, higher = faster)
+  const nodes = elGrid.querySelectorAll(".cell.pick .player");
+
+  nodes.forEach(el => {
+    const inner = el.querySelector(".scroll-text");
+    if (!inner) return;
+
+    // reset any previous inline vars
+    el.classList.remove("marquee");
+    inner.style.removeProperty("--scroll-distance");
+    inner.style.removeProperty("--marquee-duration");
+
+    // measure overflow
+    const distance = inner.scrollWidth - el.clientWidth;
+    if (distance > 1) {
+      // duration is "there" + "back" (because we bounce)
+      const oneWay = Math.max(0.5, distance / PX_PER_SECOND);
+      const roundTrip = oneWay; // animation uses 0%..100% then alternates back
+      inner.style.setProperty("--scroll-distance", `${distance}px`);
+      inner.style.setProperty("--marquee-duration", `${roundTrip}s`);
+      el.classList.add("marquee");
+    }
   });
-
-  // RIGHT header round cell (label)
-  const rightHdr = document.createElement('div');
-  rightHdr.className = 'round-cell header right';
-  rightHdr.textContent = 'Rnd';
-  grid.appendChild(rightHdr);
 }
 
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function escapeAttr(s){ return escapeHtml(s).replace(/"/g,'&quot;'); }
 
+// -------------------------- Chyron --------------------------
+function setChyronRoundNumbers(round) {
+  if (elChyronLeft)  elChyronLeft.textContent = `ROUND ${round}`;
+  if (elChyronRight) elChyronRight.textContent = `ROUND ${round}`;
+}
 
-  // Body rows: one per round
-for (let round = 1; round <= numRounds; round++) {
-  // LEFT round badge
-  const left = document.createElement('div');
-  left.className = 'round-cell left';
-  left.textContent = `R${round}`;
-  grid.appendChild(left);
-
-  // Team cells for this round
-  teamOrder.forEach(t => {
-  const cell = document.createElement('div');
-
-  // find the pick by round + team_id
-  const pick = picks.find(p => p.round === round && p.team_id === t.id);
-
-  if (pick) {
-    const posClass = pick.position ? `pos-${pick.position.toUpperCase()}` : '';
-    cell.className = `draft-cell ${posClass}`;
-
-    // Two-line content:
-    // Line 1: Player Name
-    // Line 2: POSITION – NFL_SURNAME   ROUND:SLOT(OVERALL)
-    const metaLine = [
-      pick.position || '',
-      pick.nfl_abbr || ''
-    ].filter(Boolean).join(' – ');
-
-    cell.innerHTML = `
-      <div class="player-line">${pick.player_name}</div>
-      <div class="meta-line">${metaLine} &nbsp; ${round}:${pick.pickInRound}(${pick.overall})</div>
-    `;
-  } else {
-    cell.className = 'draft-cell';
-    cell.innerHTML = `
-      <div class="player-line"></div>
-      <div class="meta-line"></div>
-    `;
+function updateChyron(newPicks) {
+  if (!elChyronText) return;
+  for (const p of newPicks) {
+    const item = `${p.playerName} (${p.position}, ${p.teamAbbr}) • Pick #${p.overall}`;
+    state.chyronItems.push(item);
+    if (state.chyronItems.length > CONFIG.MAX_CHYRON_ITEMS) state.chyronItems.shift();
   }
-
-  grid.appendChild(cell);
-});
-
-
-  // RIGHT round badge
-  const right = document.createElement('div');
-  right.className = 'round-cell right';
-  right.textContent = `R${round}`;
-  grid.appendChild(right);
+  const text = state.chyronItems.join("    •    ");
+  elChyronText.textContent = text;
+  if (elChyronText) elChyronText.style.color = "#f2f4f8";
+  if (elChyron)     elChyron.style.color = "#f2f4f8";
 }
 
+function pauseChyron() { if (elChyron) elChyron.classList.add("paused"); }
+function resumeChyron(){ if (elChyron) elChyron.classList.remove("paused"); }
 
+// -------------------------- Announcements --------------------------
+async function processQueue() {
+  if (!CONFIG.ANNOUNCEMENTS_ENABLED) return;
+  if (state.isAnnouncing) return;
+  const pick = state.pickQueue.shift();
+  if (!pick) return;
+  await announcePick(pick);
 }
 
-function setChyronRoundNumbers(currentRound) {
-  document.getElementById('chyron-left-round').textContent = `R${currentRound}`;
-  document.getElementById('chyron-right-round').textContent = `R${currentRound}`;
-}
-
-
-// 🚀 START POLLING & ANNOUNCING
-(async function init() {
+async function announcePick(pick) {
+  if (!CONFIG.ANNOUNCEMENTS_ENABLED) return;
+  state.isAnnouncing = true;
   try {
-    await loadTeamMeta();           // ⬅️ load once
-  } catch (e) {
-    console.warn('Team meta load failed:', e);
+    pauseChyron();
+    highlightCell(pick);
+    if (elOverlay && elOverlayContent) {
+      elOverlayContent.innerHTML = `
+        <div class="stinger">
+          <div class="title">PICK IS IN</div>
+          <div class="team">${escapeHtml(pick.team)}</div>
+          <div class="player">${escapeHtml(pick.playerName)}</div>
+          <div class="meta">${escapeHtml(pick.position)} • ${escapeHtml(pick.teamAbbr)} • #${pick.overall}</div>
+        </div>`;
+      elOverlay.classList.remove("hidden");
+    }
+    await sleep(CONFIG.ANNOUNCE_FREEZE_MS);
+  } finally {
+    if (elOverlay) elOverlay.classList.add("hidden");
+    unhighlightCell(pick);
+    resumeChyron();
+    state.isAnnouncing = false;
   }
-  // kick off the first poll and then the interval
-  await pollDraftData();
-  setInterval(pollDraftData, POLL_INTERVAL_MS);
-})();
-// setInterval(processQueue, ANNOUNCE_INTERVAL_MS);
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function highlightCell(pick) {
+  const sel = `.cell.pick[data-overall="${pick.overall}"]`;
+  const cell = document.querySelector(sel);
+  if (cell) cell.classList.add("glow");
+}
+function unhighlightCell(pick) {
+  const sel = `.cell.pick[data-overall="${pick.overall}"]`;
+  const cell = document.querySelector(sel);
+  if (cell) cell.classList.remove("glow");
+}
+
+function renderNoPicksMessage() {
+  const el = document.getElementById("draft-grid");
+  if (!el) return;
+  el.innerHTML = `<div class="grid header"><div class="hdr round sticky">Rnd</div></div>
+                  <div style="padding:12px;color:#fff;background:#5a2b2b;border-radius:8px;">
+                    No picks loaded. Check JSON shape and CONFIG paths.
+                  </div>`;
+}
+
+// -------------------------- Polling --------------------------
+async function poll() {
+  const url = (CONFIG.MODE === "live" && CONFIG.LIVE_URL) ? CONFIG.LIVE_URL : CONFIG.MOCK_URL;
+  try {
+    const json = await fetchJSON(url);
+    const picks = extractPicks(json);
+    if (!picks.length) { renderNoPicksMessage(); return; }
+
+    const seen = new Set(state.picks.map(p => p.overall));
+    const newPicks = picks.filter(p => !seen.has(p.overall));
+
+    state.picks = picks;
+    renderGrid(state.picks);
+
+    const round = deriveCurrentRound(state.picks, state.teamOrder.length || deriveTeamOrder(state.picks).length);
+    setChyronRoundNumbers(round);
+    if (newPicks.length) updateChyron(newPicks);
+
+    if (CONFIG.ANNOUNCEMENTS_ENABLED && newPicks.length) {
+      state.pickQueue.push(...newPicks);
+    }
+  } catch (err) {
+    console.error("Polling failed:", err);
+  }
+}
+
+// -------------------------- Boot --------------------------
+async function boot() {
+  // Load team meta labels (uses your uploaded file)
+  loadTeamMeta().catch(()=>{}); // non-blocking
+
+  // Initial static render + single data load
+  renderGrid(state.picks);
+  setChyronRoundNumbers(1);
+  resumeChyron();
+
+  await poll();
+
+  if (CONFIG.ENABLE_POLLING) setInterval(poll, CONFIG.POLL_MS);
+  if (CONFIG.ANNOUNCEMENTS_ENABLED) setInterval(processQueue, 500);
+
+  // Re-evaluate scrolling on resize
+  window.addEventListener("resize", enableCellScrolling);
+}
+
+document.addEventListener("DOMContentLoaded", boot);
