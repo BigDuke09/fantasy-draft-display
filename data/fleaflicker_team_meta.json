@@ -78,5 +78,87 @@
     "CustomAbbreviation": "RUS",
     "CustomDraftBoardHeader": "Rodents",
     "CustomName2": "Rodents of Unusual Size"
+  },
+
+  {
+    "teamId": 1811616,
+    "name": "The Donkeys",
+    "initials": "TD",
+    "CustomAbbreviation": "DON",
+    "CustomDraftBoardHeader": "The Donkeys",
+    "CustomName2": "The Donkeys"
+  },
+  {
+    "teamId": 1811614,
+    "name": "Brians Incredibly Stupid Long Name",
+    "initials": "BI",
+    "CustomAbbreviation": "BRI",
+    "CustomDraftBoardHeader": "Brians",
+    "CustomName2": "Brians Incredibly Stupid Long Nam"
+  },
+
+  {
+    "teamId": 1811609,
+    "name": "Detroit Bubbas",
+    "initials": "DB",
+    "CustomAbbreviation": "DET",
+    "CustomDraftBoardHeader": "Detroit Bubbas",
+    "CustomName2": "Detroit Bubbas"
+  },
+  {
+    "teamId": 1811608,
+    "name": "Austin Rockers",
+    "initials": "AR",
+    "CustomAbbreviation": "AUS",
+    "CustomDraftBoardHeader": "Austin Rockers",
+    "CustomName2": "Austin Rockers"
+  },
+  {
+    "teamId": 1811607,
+    "name": "Lansing Giants",
+    "initials": "LG",
+    "CustomAbbreviation": "LAN",
+    "CustomDraftBoardHeader": "Lansing Giants",
+    "CustomName2": "Lansing Giants"
+  },
+  {
+    "teamId": 1811592,
+    "name": "Bay City Rollers",
+    "initials": "BC",
+    "CustomAbbreviation": "BCR",
+    "CustomDraftBoardHeader": "Rodents",
+    "CustomName2": "Rodents of Unusual Size"
+  },
+  {
+    "teamId": 1811613,
+    "name": "Cedar Park Aristocrats",
+    "initials": "CP",
+    "CustomAbbreviation": "CED",
+    "CustomDraftBoardHeader": "Rollers",
+    "CustomName2": "Bay City Rollers"
+  },
+  {
+    "teamId": 1811612,
+    "name": "Jackson Prisoners",
+    "initials": "JP",
+    "CustomAbbreviation": "JAC",
+    "CustomDraftBoardHeader": "Jackson Prisoners",
+    "CustomName2": "Jackson Prisoners"
+  },
+  {
+    "teamId": 1811615,
+    "name": "Dallas Daughters",
+    "initials": "DD",
+    "CustomAbbreviation": "DAL",
+    "CustomDraftBoardHeader": "Dallas Daughters",
+    "CustomName2": "Dallas Daughters"
+  },
+  {
+    "teamId": 1807896,
+    "name": "Houston Scourge",
+    "initials": "HS",
+    "CustomAbbreviation": "HOU",
+    "CustomDraftBoardHeader": "Houston Scourge",
+    "CustomName2": "Houston Scourge"
   }
 ]

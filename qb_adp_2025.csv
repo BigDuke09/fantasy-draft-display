@@ -1,0 +1,40 @@
+Consensus,Player,Player Link,Player Slug/ID,Consensus Pos,Team/Bye,BestBall10s,CBS,DraftKings,Drafters,ESPN,MFL,NFFC,NFLcom,RT Sports,Sleeper,Underdog,Yahoo!
+23,Josh Allen,https://www.footballguys.com/player/Josh+Allen/AlleJo01,AlleJo01,QB1,BUF/7,18,17,25,27,20,3,27,21,25,20,28,22
+24,Lamar Jackson,https://www.footballguys.com/player/Lamar+Jackson/JackLa00,JackLa00,QB2,BAL/7,17,16,27,30,22,8,24,18,24,22,29,21
+29,Jayden Daniels,https://www.footballguys.com/player/Jayden+Daniels/DaniJa00,DaniJa00,QB3,WAS/12,29,30,37,38,27,17,36,28,32,31,37,28
+38,Jalen Hurts,https://www.footballguys.com/player/Jalen+Hurts/HurtJa00,HurtJa00,QB4,PHI/9,32,31,43,41,28,19,42,34,44,35,44,33
+39,Joe Burrow,https://www.footballguys.com/player/Joe+Burrow/BurrJo01,BurrJo01,QB5,CIN/10,27,25,44,55,33,13,32,35,37,38,63,40
+57,Patrick Mahomes II,https://www.footballguys.com/player/Patrick+Mahomes+II/MahoPa00,MahoPa00,QB6,KC/10,39,46,73,77,44,31,70,42,59,52,81,49
+70,Baker Mayfield,https://www.footballguys.com/player/Baker+Mayfield/MayfBa00,MayfBa00,QB7,TB/9,43,55,80,102,52,44,76,61,73,66,91,68
+74,Bo Nix,https://www.footballguys.com/player/Bo+Nix/NixxBo00,NixxBo00,QB8,DEN/12,67,69,84,93,66,50,85,65,77,71,97,66
+89,Kyler Murray,https://www.footballguys.com/player/Kyler+Murray/MurrKy00,MurrKy00,QB9,ARI/8,68,76,98,104,77,55,103,81,106,95,95,92
+93,Dak Prescott,https://www.footballguys.com/player/Dak+Prescott/PresDa01,PresDa01,QB10,DAL/10,71,83,89,97,100,67,90,116,93,117,105,84
+95,Brock Purdy,https://www.footballguys.com/player/Brock+Purdy/PurdBr00,PurdBr00,QB11,SF/14,77,91,100,107,79,69,108,106,122,108,103,71
+100,Jared Goff,https://www.footballguys.com/player/Jared+Goff/GoffJa00,GoffJa00,QB12,DET/8,57,89,105,120,119,57,102,103,116,88,118,104
+101,Justin Fields,https://www.footballguys.com/player/Justin+Fields/FielJu00,FielJu00,QB13,NYJ/9,69,109,108,98,118,104,115,64,124,150,108,82
+113,Caleb Williams,https://www.footballguys.com/player/Caleb+Williams/WillCa01,WillCa01,QB14,CHI/5,122,124,110,108,112,83,112,114,105,140,113,110
+114,Justin Herbert,https://www.footballguys.com/player/Justin+Herbert/HerbJu00,HerbJu00,QB15,LAC/12,127,117,120,125,92,81,121,123,131,103,127,103
+117,Drake Maye,https://www.footballguys.com/player/Drake+Maye/MayeDr00,MayeDr00,QB16,NE/14,128,132,111,110,129,91,118,144,136,143,111,109
+121,C.J. Stroud,https://www.footballguys.com/player/C+J++Stroud/StroCJ00,StroCJ00,QB17,HOU/6,137,129,126,129,140,80,129,132,149,119,133,128
+124,J.J. McCarthy,https://www.footballguys.com/player/J+J++McCarthy/McCaJJ00,McCaJJ00,QB18,MIN/6,133,155,123,123,134,117,136,153,145,151,122,134
+130,Jordan Love,https://www.footballguys.com/player/Jordan+Love/LoveJo01,LoveJo01,QB19,GB/5,134,125,132,133,138,101,135,141,156,145,128,123
+141,Trevor Lawrence,https://www.footballguys.com/player/Trevor+Lawrence/LawrTr00,LawrTr00,QB20,JAX/8,136,156,133,131,169,111,143,175,147,180,129,169
+154,Michael Penix Jr.,https://www.footballguys.com/player/Michael+Penix+Jr+/PeniMi00,PeniMi00,QB21,ATL/5,152,171,137,142,177,128,168,188,193,183,142,145
+156,Tua Tagovailoa,https://www.footballguys.com/player/Tua+Tagovailoa/TagoTu00,TagoTu00,QB22,MIA/12,148,153,146,154,163,137,183,194,162,212,157,143
+160,Bryce Young,https://www.footballguys.com/player/Bryce+Young/YounBr01,YounBr01,QB23,CAR/14,168,191,148,146,190,147,167,193,186,188,150,158
+168,Cameron Ward,https://www.footballguys.com/player/Cameron+Ward/WardCa00,WardCa00,QB24,TEN/10,172,187,150,149,166,153,185,-,227,163,153,138
+172,Matthew Stafford,https://www.footballguys.com/player/Matthew+Stafford/StafMa00,StafMa00,QB25,LAR/8,156,152,167,176,167,145,204,168,202,211,177,146
+177,Sam Darnold,https://www.footballguys.com/player/Sam+Darnold/DarnSa00,DarnSa00,QB26,SEA/8,173,-,162,173,203,169,190,201,204,219,179,139
+179,Geno Smith,https://www.footballguys.com/player/Geno+Smith/SmitGe01,SmitGe01,QB27,LV/8,159,177,155,161,212,162,208,203,203,241,160,140
+191,Aaron Rodgers,https://www.footballguys.com/player/Aaron+Rodgers/RodgAa00,RodgAa00,QB28,PIT/5,198,-,177,189,195,168,236,191,239,215,197,127
+229,Jaxson Dart,https://www.footballguys.com/player/Jaxson+Dart/DartJa00,DartJa00,QB29,NYG/14,207,-,188,192,204,237,-,238,-,239,207,-
+235,Shedeur Sanders,https://www.footballguys.com/player/Shedeur+Sanders/SandSh00,SandSh00,QB30,CLE/9,-,-,-,241,194,311,-,212,-,206,-,125
+246,Daniel Jones,https://www.footballguys.com/player/Daniel+Jones/JoneDa05,JoneDa05,QB31,IND/11,212,-,186,187,-,215,242,-,-,-,204,-
+255,Anthony Richardson Sr.,https://www.footballguys.com/player/Anthony+Richardson+Sr+/RichAn00,RichAn00,QB32,IND/11,225,-,212,226,-,251,-,223,-,243,201,-
+270,Russell Wilson,https://www.footballguys.com/player/Russell+Wilson/WilsRu00,WilsRu00,QB33,NYG/14,223,-,208,215,243,214,-,-,-,-,228,-
+277,Joe Flacco,https://www.footballguys.com/player/Joe+Flacco/FlacJo00,FlacJo00,QB34,CLE/9,-,-,217,217,247,266,-,-,-,-,234,-
+286,Carson Wentz,https://www.footballguys.com/player/Carson+Wentz/WentCa00,WentCa00,QB35,MIN/6,-,-,-,-,-,-,-,166,-,-,-,-
+291,Tyler Shough,https://www.footballguys.com/player/Tyler+Shough/ShouTy00,ShouTy00,QB36,NO/11,-,-,228,232,-,324,-,-,-,-,245,-
+314,Spencer Rattler,https://www.footballguys.com/player/Spencer+Rattler/RattSp00,RattSp00,QB37,NO/11,-,-,-,233,-,290,-,-,-,-,-,-
+324,Kirk Cousins,https://www.footballguys.com/player/Kirk+Cousins/CousKi00,CousKi00,QB38,ATL/5,-,-,-,-,236,363,-,-,-,-,-,-
+335,Jalen Milroe,https://www.footballguys.com/player/Jalen+Milroe/MilrJa00,MilrJa00,QB39,SEA/8,-,-,-,244,249,244,-,-,-,-,-,-

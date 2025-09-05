@@ -6,11 +6,13 @@
 
 // -------------------------- Config --------------------------
 const CONFIG = {
-  MODE: "mock",                           // "mock" | "live"
-  MOCK_URL: "mock/draftboard_btks_2024.json",
-  LIVE_URL: "",
+  FORCE_PROXY: true,
+  PROXY_TEMPLATE: "https://api.allorigins.win/raw?url={url}",
+  MODE: "live",                           // "mock" | "live"
+  MOCK_URL: "mock/draftboard_tst2_2024.json",
+  LIVE_URL: "https://www.fleaflicker.com/api/FetchLeagueDraftBoard?sport=NFL&league_id=350963&season=2025&draft_number=0",
 
-  ENABLE_POLLING: false,                  // <- OFF for alignment work
+  ENABLE_POLLING: true,                  // <- OFF for alignment work
   POLL_MS: 10000,
   ANNOUNCEMENTS_ENABLED: false,           // <- OFF for alignment work
   ANNOUNCE_FREEZE_MS: 2500,
@@ -64,7 +66,11 @@ function posClass(position) {
 
 
 function fetchJSON(urlLike) {
-  const url = resolveUrl(urlLike);
+  const orig = resolveUrl(urlLike);
+  const url = (CONFIG.FORCE_PROXY && CONFIG.PROXY_TEMPLATE)
+    ? CONFIG.PROXY_TEMPLATE.replace("{url}", encodeURIComponent(orig))
+    : orig;
+  console.debug("[fetchJSON] GET", url); // debug line
   return fetch(url, { cache: "no-store" })
     .then(async (r) => {
       const text = await r.text();
@@ -122,28 +128,6 @@ function normalizePick(rec) {
 // Accept FleaFlicker-style mock: { orderedSelections: [...] } and a few alternates.
 function extractPicks(raw) {
   if (!raw) return [];
-
-  // Handle FleaFlicker table schema: { draftOrder:[...], rows:[ { round, cells:[ {...}, {...} ] }, ... ] }
-  if (Array.isArray(raw.rows)) {
-    const flattened = [];
-    for (const row of raw.rows) {
-      const r = Number(row.round || row.rnd || 0);
-      const cells = Array.isArray(row.cells) ? row.cells : [];
-      for (const c of cells) {
-        // Stamp round/slot/overall if missing (slot = index+1, overall = calc if absent)
-        const slot = Number(c?.slot?.slot ?? c?.pickInRound ?? (cells.indexOf(c) + 1));
-        const overall = Number(
-          c?.slot?.overall ?? ((r > 0 && slot > 0) ? ((r - 1) * (cells.length || 12) + slot) : 0)
-        );
-        const merged = Object.assign({}, c, { slot: { round: r, slot, overall } });
-        flattened.push(merged);
-      }
-    }
-    return flattened
-      .map(normalizePick)
-      .filter(p => p.playerName)
-      .sort((a,b) => a.overall - b.overall);
-  }
   let arr = [];
   if (Array.isArray(raw)) {
     arr = raw;
@@ -160,6 +144,28 @@ function extractPicks(raw) {
       k => Array.isArray(raw[k]) && raw[k].length && typeof raw[k][0] === "object"
     );
     if (firstArrayKey) arr = raw[firstArrayKey];
+  }
+
+  // Handle FleaFlicker table schema: { draftOrder:[...], rows:[ { round, cells:[...] } ] }
+  if (Array.isArray(raw?.rows)) {
+    const flattened = [];
+    for (const row of raw.rows) {
+      const r = Number(row.round ?? row.rnd ?? 0);
+      const cells = Array.isArray(row.cells) ? row.cells : [];
+      for (let i = 0; i < cells.length; i++) {
+        const c = cells[i];
+        const slot = Number(c?.slot?.slot ?? c?.pickInRound ?? (i + 1));
+        const overall = Number(
+          c?.slot?.overall ?? ((r > 0 && slot > 0) ? ((r - 1) * (cells.length || 12) + slot) : 0)
+        );
+        const merged = Object.assign({}, c, { slot: { round: r, slot, overall } });
+        flattened.push(merged);
+      }
+    }
+    return flattened
+      .map(normalizePick)
+      .filter(p => p.playerName)
+      .sort((a,b) => a.overall - b.overall);
   }
 
   return arr

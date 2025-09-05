@@ -7,7 +7,7 @@
 // -------------------------- Config --------------------------
 const CONFIG = {
   MODE: "mock",                           // "mock" | "live"
-  MOCK_URL: "mock/draftboard_btks_2024.json",
+  MOCK_URL: "mock/draftboard_tst2_2024.json",
   LIVE_URL: "",
 
   ENABLE_POLLING: false,                  // <- OFF for alignment work
@@ -18,7 +18,7 @@ const CONFIG = {
   MAX_CHYRON_ITEMS: 40,
 
   // Team meta (use your file with CustomDraftBoardHeader)
-  TEAM_META_FILE: "data/fleaflicker_team_meta.json"
+  TEAM_META_FILE: "fleaflicker_team_meta.json"
 };
 
 const CHYRON = {

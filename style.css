@@ -175,42 +175,55 @@ body {
 /* Announcement highlight (small, no layout shift) */
 .cell.pick.glow { box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 0 10px rgba(255,255,255,.35) inset; }
 
-/* ===== Chyron ===== */
+/* Chyron shell (already present) */
 #chyron {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
+  position: fixed; bottom: 0; left: 0; right: 0;
   background: #0a0e13;
   border-top: 1px solid #1a2734;
   padding: 5px 8px;
   display: grid;
-  grid-template-columns: 140px 1fr 140px;
-  align-items: center;
-  gap: 6px;
-  font-weight: 700;
-  color: var(--text);
+  grid-template-columns: 140px 1fr 140px; /* side badges + center lane */
+  align-items: center; gap: 6px; font-weight: 700; color: #f2f4f8;
+  z-index: 999; /* sits above page but below any stingers */
 }
+
+/* Round badges: solid background, above the scroller */
 #chyron > #chyron-left-round,
 #chyron > #chyron-right-round {
+  position: relative;
+  z-index: 2;
   background: #182232;
-  border: 1px solid var(--accent-gold);
-  color: var(--accent-gold);
+  border: 1px solid #b8942f;
+  color: #d4af37;
   border-radius: 999px;
   text-align: center;
   padding: 3px 6px;
   font-size: clamp(10px, 0.9vw, 13px);
   white-space: nowrap;
 }
+
+/* Center lane: contains the scrolling text, never bleeds under badges */
 #chyron > #chyron-text {
-  display: inline-block;
-  white-space: nowrap;
+  position: relative;
+  z-index: 1;
   overflow: hidden;
-  color: var(--text);
-  animation: chyron-scroll var(--chyron-duration, 40s) linear infinite;
+  white-space: nowrap;
+  will-change: transform;
+  display: inline-block;
 }
-#chyron.paused { animation-play-state: paused !important; }
-@keyframes chyron-scroll {
-  0%   { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+
+/* Bounce animation when overflow exists */
+#chyron > #chyron-text.bounce {
+  animation-name: chyron-bounce;
+  animation-duration: var(--chyron-duration, 4s);
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
+
+@keyframes chyron-bounce {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-1 * var(--chyron-distance, 0px))); }
 }
 
 /* ===== “Pick Is In” Overlay (kept minimal; disabled right now) ===== */
