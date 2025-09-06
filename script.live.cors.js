@@ -10,7 +10,7 @@ const CONFIG = {
   PROXY_TEMPLATE: "https://api.allorigins.win/raw?url={url}",
   MODE: "live",                           // "mock" | "live"
   MOCK_URL: "mock/draftboard_tst2_2024.json",
-  LIVE_URL: "https://www.fleaflicker.com/api/FetchLeagueDraftBoard?sport=NFL&league_id=350963&season=2025&draft_number=0",
+  LIVE_URL: "https://www.fleaflicker.com/api/FetchLeagueDraftBoard?sport=NFL&league_id=63609&season=2025&draft_number=0",
 
   ENABLE_POLLING: true,                  // <- OFF for alignment work
   POLL_MS: 10000,
